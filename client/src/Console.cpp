@@ -40,6 +40,19 @@ void Console::recvData() {
 }
 
 void Console::sendData() {
-    string cmd = "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);
+    string cmd =
+        "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);
+    system(cmd.c_str());
+}
+
+void Console::backupData() {
+    string cmd = "mv data/ data_bak/";
+    system(cmd.c_str());
+    rmDir("data/");
+}
+
+void Console::recoverData() {
+    rmDir("data/");
+    string cmd = "mv data_bak/ data/";
     system(cmd.c_str());
 }

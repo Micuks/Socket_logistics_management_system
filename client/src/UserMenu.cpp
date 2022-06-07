@@ -76,7 +76,7 @@ void Menu::UserMenu::start() const {
         else if (s == "8")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -179,7 +179,7 @@ void Menu::UserMenu::sendPackage() const {
         else if (s == "2")
             return;
         else if (s == "3")
-            exit(0);
+            quit();
     }
 }
 
@@ -224,7 +224,7 @@ void Menu::UserMenu::recvPackage() const {
         else if (s == "2")
             return;
         else if (s == "3")
-            exit(0);
+            quit();
     }
 }
 
@@ -279,7 +279,7 @@ void Menu::UserMenu::chargeWallet() const {
         else if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 

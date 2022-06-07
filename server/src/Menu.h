@@ -1,8 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Warehouse.h"
 #include "ServerSocket.h"
+#include "Warehouse.h"
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -26,13 +26,17 @@ class Menu {
         void schPackage() const;
 
       public:
-        SubMenu(Warehouse *_wh, ServerSocket *_pServer) : pServer(_pServer), wh(_wh), op(&(_wh->op)) {}
+        SubMenu(Warehouse *_wh, ServerSocket *_pServer)
+            : pServer(_pServer), wh(_wh), op(&(_wh->op)) {}
     };
     class UserMenu : public SubMenu {
         Warehouse::UserOperation *uop;
 
       public:
-        UserMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { uop = &(_wh->uop); }
+        UserMenu(Warehouse *_wh, ServerSocket *_pServer)
+            : SubMenu(_wh, _pServer) {
+            uop = &(_wh->uop);
+        }
         void login() const;
 
       private:
@@ -48,7 +52,10 @@ class Menu {
         Warehouse::ManagerOperation *mop;
 
       public:
-        ManagerMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { mop = &(_wh->mop); }
+        ManagerMenu(Warehouse *_wh, ServerSocket *_pServer)
+            : SubMenu(_wh, _pServer) {
+            mop = &(_wh->mop);
+        }
         void login() const;
 
       private:
@@ -71,7 +78,10 @@ class Menu {
         Warehouse::CourierOperation *cop;
 
       public:
-        CourierMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { cop = &(_wh->cop); }
+        CourierMenu(Warehouse *_wh, ServerSocket *_pServer)
+            : SubMenu(_wh, _pServer) {
+            cop = &(_wh->cop);
+        }
         void login() const;
 
       private:
@@ -82,11 +92,16 @@ class Menu {
         void changeCpasswd() const;
     };
 
+  protected:
+    void static quit();
+
   public:
     UserMenu um;
     ManagerMenu mm;
     CourierMenu cm;
-    Menu(Warehouse *_wh, ServerSocket *_pServer) : pServer(_pServer), wh(_wh), um(_wh, _pServer), mm(_wh, _pServer), cm(_wh, _pServer) {}
+    Menu(Warehouse *_wh, ServerSocket *_pServer)
+        : pServer(_pServer), wh(_wh), um(_wh, _pServer), mm(_wh, _pServer),
+          cm(_wh, _pServer) {}
     void start() const;
 };
 

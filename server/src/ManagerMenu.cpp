@@ -80,7 +80,7 @@ void Menu::ManagerMenu::start() const {
         else if (s == "15")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -160,7 +160,7 @@ void Menu::ManagerMenu::addUser() const {
         else if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -214,7 +214,7 @@ void Menu::ManagerMenu::addCourier() const {
         else if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -253,7 +253,7 @@ void Menu::ManagerMenu::delUser() const {
         if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -292,7 +292,7 @@ void Menu::ManagerMenu::delCourier() const {
         else if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -348,7 +348,7 @@ void Menu::ManagerMenu::collectPackage() const {
         else if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -374,7 +374,7 @@ void Menu::ManagerMenu::schUser() const {
         if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -400,7 +400,7 @@ void Menu::ManagerMenu::schCourier() const {
         if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -426,7 +426,7 @@ void Menu::ManagerMenu::schHistory() const {
         if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 

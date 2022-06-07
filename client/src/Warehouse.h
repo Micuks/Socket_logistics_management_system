@@ -1,10 +1,10 @@
 #ifndef WAREHOUSE_H
 #define WAREHOUSE_H
 
+#include "ClientSocket.h"
 #include "Console.h"
 #include "History.h"
 #include "Package.h"
-#include "ClientSocket.h"
 #include "User.h"
 #include <bits/stdc++.h>
 using namespace std;
@@ -46,7 +46,8 @@ class Warehouse {
         ClientSocket *pClient;
 
       public:
-        Operation(Data *_data, ClientSocket *_pClient) : data(_data), pClient(_pClient) {}
+        Operation(Data *_data, ClientSocket *_pClient)
+            : data(_data), pClient(_pClient) {}
         int printPackage() const;
         int printUser() const;
         int printCourier() const;
@@ -73,7 +74,10 @@ class Warehouse {
         Manager m;
 
       public:
-        ManagerOperation(Data *_data, ClientSocket *_pClient) : data(_data), pClient(_pClient) { setManager(); }
+        ManagerOperation(Data *_data, ClientSocket *_pClient)
+            : data(_data), pClient(_pClient) {
+            setManager();
+        }
         void setManager();
         int getWallet() const;
         void chargeMWallet(const int &val);
@@ -102,7 +106,8 @@ class Warehouse {
 
       public:
         void initSRHis();
-        UserOperation(Data *_data, ClientSocket *_pClient) : data(_data), pClient(_pClient) {}
+        UserOperation(Data *_data, ClientSocket *_pClient)
+            : data(_data), pClient(_pClient) {}
         void billManager(const string &ptype, const string &quantity);
         bool billPackage(const string &ptype, const string &quantity);
         void setUser(const string &_uid);
@@ -136,7 +141,8 @@ class Warehouse {
         void initColHis();
         string getCid() const;
         double getWallet() const;
-        CourierOperation(Data *_data, ClientSocket *_pClient) : data(_data), pClient(_pClient){};
+        CourierOperation(Data *_data, ClientSocket *_pClient)
+            : data(_data), pClient(_pClient){};
         void setCourier(const string _cid);
         void chargeWallet(const double &val);
         void finColl(const string &hid);
@@ -150,8 +156,10 @@ class Warehouse {
         bool isCollAble(const string &hid) const;
     } cop;
     Warehouse(ClientSocket *_pClient)
-        : pClient(_pClient), op(Operation(&data, _pClient)), mop(ManagerOperation(&data, _pClient)),
-          cop(CourierOperation(&data, _pClient)), uop(UserOperation(&data, _pClient)) {}
+        : pClient(_pClient), op(Operation(&data, _pClient)),
+          mop(ManagerOperation(&data, _pClient)),
+          cop(CourierOperation(&data, _pClient)),
+          uop(UserOperation(&data, _pClient)) {}
 };
 
 #endif

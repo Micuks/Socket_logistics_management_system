@@ -28,7 +28,7 @@ void Menu::SubMenu::schPackage() const {
         if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -48,13 +48,13 @@ void Menu::start() const {
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
         }
+        pClient->send(s.c_str());
+        string msg = pClient->receive();
+        if (msg != "ok") {
+            perror("user menu error");
+            exit(EXIT_FAILURE);
+        }
         if (s == "1") {
-            pClient->send(USER.c_str());
-            string msg = pClient->receive();
-            if (msg != "ok") {
-                perror("user menu error");
-                exit(EXIT_FAILURE);
-            }
             um.login();
         }
         if (s == "2")
@@ -62,6 +62,12 @@ void Menu::start() const {
         if (s == "3")
             mm.login();
         else if (s == "4")
-            exit(0);
+            quit();
     }
+}
+
+void Menu::quit() {
+    cout << "exiting..." << endl;
+    con.sendData();
+    exit(0);
 }

@@ -37,44 +37,53 @@ void Menu::UserMenu::login() const {
     }
 }
 
+// void Menu::UserMenu::start() const {
+//     while (true) {
+//         system("clear");
+//         cout << "1. 发快递" << endl
+//              << "2. 收快递" << endl
+//              << "3. 搜索快递" << endl
+//              << "4. 打印所有已发快递" << endl
+//              << "5. 打印所有签收和待签收快递" << endl
+//              << "6. 充值" << endl
+//              << "7. 更改密码" << endl
+//              << "8. 返回上级菜单" << endl
+//              << "9. 退出系统" << endl;
+//         string s;
+//         while (true) {
+//             getline(cin, s);
+//             if (isPositive(s) && stoi(s) <= 9)
+//                 break;
+//             cout << "输入内容错误, 请重新输入" << endl;
+//         }
+//         if (s == "1")
+//             sendPackage();
+//         else if (s == "2")
+//             recvPackage();
+//         else if (s == "3")
+//             schPackage();
+//         else if (s == "4")
+//             printSendHis();
+//         else if (s == "5")
+//             printRecvHis();
+//         else if (s == "6")
+//             chargeWallet();
+//         else if (s == "7")
+//             changeUpasswd();
+//         else if (s == "8")
+//             return;
+//         else
+//             quit();
+//     }
+// }
+
 void Menu::UserMenu::start() const {
-    while (true) {
         system("clear");
-        cout << "1. 发快递" << endl
-             << "2. 收快递" << endl
-             << "3. 搜索快递" << endl
-             << "4. 打印所有已发快递" << endl
-             << "5. 打印所有签收和待签收快递" << endl
-             << "6. 充值" << endl
-             << "7. 更改密码" << endl
-             << "8. 返回上级菜单" << endl
-             << "9. 退出系统" << endl;
-        string s;
-        while (true) {
-            getline(cin, s);
-            if (isPositive(s) && stoi(s) <= 9)
-                break;
-            cout << "输入内容错误, 请重新输入" << endl;
-        }
-        if (s == "1")
-            sendPackage();
-        else if (s == "2")
-            recvPackage();
-        else if (s == "3")
-            schPackage();
-        else if (s == "4")
-            printSendHis();
-        else if (s == "5")
-            printRecvHis();
-        else if (s == "6")
-            chargeWallet();
-        else if (s == "7")
-            changeUpasswd();
-        else if (s == "8")
-            return;
-        else
-            exit(0);
-    }
+        cout << "用户操作中" << endl;
+        con.backupData();
+        con.rmDir("data/");
+        con.recvData();
+        cout << "用户操作完毕, 退出系统"  << endl;
 }
 
 void Menu::UserMenu::sendPackage() const {
@@ -176,7 +185,7 @@ void Menu::UserMenu::sendPackage() const {
         else if (s == "2")
             return;
         else if (s == "3")
-            exit(0);
+            quit();
     }
 }
 
@@ -221,7 +230,7 @@ void Menu::UserMenu::recvPackage() const {
         else if (s == "2")
             return;
         else if (s == "3")
-            exit(0);
+            quit();
     }
 }
 
@@ -276,7 +285,7 @@ void Menu::UserMenu::chargeWallet() const {
         else if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 

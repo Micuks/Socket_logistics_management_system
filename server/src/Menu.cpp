@@ -28,7 +28,7 @@ void Menu::SubMenu::schPackage() const {
         if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -50,6 +50,13 @@ void Menu::start() const {
         if (s == "3")
             mm.login();
         else if (s == "4")
-            exit(0);
+            quit();
     }
+}
+
+void Menu::quit() {
+    cout << "exiting...";
+    con.backupData();
+    con.rmDir("data/");
+    con.recvData();
 }

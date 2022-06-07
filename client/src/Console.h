@@ -1,12 +1,13 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
-#include <bits/stdc++.h>
 #include "ClientSocket.h"
-const string serverAddr = "127.0.0.1";
-const int port = 57601;
+#include <bits/stdc++.h>
 
 using namespace std;
+
+const string serverAddr = "127.0.0.1";
+const int port = 57601;
 
 class Console {
   public:
@@ -20,6 +21,8 @@ class Console {
     string couDir(const string &s);
     void recvData();
     void sendData();
+    void backupData();
+    void recoverData();
 };
 
 template <typename T> void Console::inFile(const string &s, T &t) {

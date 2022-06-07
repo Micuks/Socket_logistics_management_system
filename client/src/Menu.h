@@ -1,8 +1,8 @@
 #ifndef MENU_H
 #define MENU_H
 
-#include "Warehouse.h"
 #include "ClientSocket.h"
+#include "Warehouse.h"
 #include <bits/stdc++.h>
 using namespace std;
 
@@ -25,13 +25,17 @@ class Menu {
         void schPackage() const;
 
       public:
-        SubMenu(Warehouse *_wh, ClientSocket *_pClient) : wh(_wh), pClient(_pClient), op(&(_wh->op)) {}
+        SubMenu(Warehouse *_wh, ClientSocket *_pClient)
+            : wh(_wh), pClient(_pClient), op(&(_wh->op)) {}
     };
     class UserMenu : public SubMenu {
         Warehouse::UserOperation *uop;
 
       public:
-        UserMenu(Warehouse *_wh, ClientSocket *_pClient) : SubMenu(_wh, _pClient) { uop = &(_wh->uop); }
+        UserMenu(Warehouse *_wh, ClientSocket *_pClient)
+            : SubMenu(_wh, _pClient) {
+            uop = &(_wh->uop);
+        }
         void login() const;
 
       private:
@@ -47,7 +51,10 @@ class Menu {
         Warehouse::ManagerOperation *mop;
 
       public:
-        ManagerMenu(Warehouse *_wh, ClientSocket *_pCliSock) : SubMenu(_wh, _pCliSock) { mop = &(_wh->mop); }
+        ManagerMenu(Warehouse *_wh, ClientSocket *_pCliSock)
+            : SubMenu(_wh, _pCliSock) {
+            mop = &(_wh->mop);
+        }
         void login() const;
 
       private:
@@ -70,7 +77,10 @@ class Menu {
         Warehouse::CourierOperation *cop;
 
       public:
-        CourierMenu(Warehouse *_wh, ClientSocket *_pCliSock) : SubMenu(_wh, _pCliSock) { cop = &(_wh->cop); }
+        CourierMenu(Warehouse *_wh, ClientSocket *_pCliSock)
+            : SubMenu(_wh, _pCliSock) {
+            cop = &(_wh->cop);
+        }
         void login() const;
 
       private:
@@ -81,11 +91,16 @@ class Menu {
         void changeCpasswd() const;
     };
 
+  protected:
+    void static quit();
+
   public:
     UserMenu um;
     ManagerMenu mm;
     CourierMenu cm;
-    Menu(Warehouse *_wh, ClientSocket *_pClient) : wh(_wh), pClient(_pClient), um(_wh, _pClient), mm(_wh, _pClient), cm(_wh, _pClient) {}
+    Menu(Warehouse *_wh, ClientSocket *_pClient)
+        : wh(_wh), pClient(_pClient), um(_wh, _pClient), mm(_wh, _pClient),
+          cm(_wh, _pClient) {}
     void start() const;
 };
 

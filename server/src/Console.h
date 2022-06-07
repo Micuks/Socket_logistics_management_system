@@ -17,6 +17,8 @@ class Console {
     string couDir(const string &s);
     void sendData();
     void recvData();
+    void backupData();
+    void recoverData();
 };
 
 template <typename T> void Console::inFile(const string &s, T &t) {

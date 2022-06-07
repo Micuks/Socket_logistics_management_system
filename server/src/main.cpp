@@ -12,6 +12,7 @@ using namespace std;
 
 Console con;
 int main() {
+    con.sendData();
     ServerSocket server(PORT, 1);
     server.addClient();
     server.send("Hello Client", 0);

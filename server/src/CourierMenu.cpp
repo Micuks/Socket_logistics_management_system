@@ -119,7 +119,7 @@ void Menu::CourierMenu::acceptPackage() const {
         else if (s == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
@@ -156,7 +156,7 @@ void Menu::CourierMenu::chargeWallet() const {
         else if (k == "2")
             return;
         else
-            exit(0);
+            quit();
     }
 }
 
