@@ -1,11 +1,11 @@
 cmake_minimum_required(VERSION 3.16)
-project(logistics_management_system)
+project(server)
 
 set(CMAKE_CXX_STANDARD 14)
 
 include_directories(src)
 
-add_executable(logistics_management_system
+add_executable(server
         src/main.cpp
         src/Console.cpp
         src/Console.h

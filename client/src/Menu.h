@@ -8,21 +8,23 @@ using namespace std;
 // Menu
 class Menu {
     Warehouse *wh;
+    int cliSock;
     class SubMenu {
         Warehouse *wh;
 
       protected:
         Warehouse::Operation *op;
+        int cliSock;
         void schPackage() const;
 
       public:
-        SubMenu(Warehouse *_wh) : wh(_wh), op(&(_wh->op)) {}
+        SubMenu(Warehouse *_wh, int _cliSock) : wh(_wh), cliSock(_cliSock), op(&(_wh->op)) {}
     };
     class UserMenu : public SubMenu {
         Warehouse::UserOperation *uop;
 
       public:
-        UserMenu(Warehouse *_wh) : SubMenu(_wh) { uop = &(_wh->uop); }
+        UserMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { uop = &(_wh->uop); }
         void login() const;
 
       private:
@@ -38,7 +40,7 @@ class Menu {
         Warehouse::ManagerOperation *mop;
 
       public:
-        ManagerMenu(Warehouse *_wh) : SubMenu(_wh) { mop = &(_wh->mop); }
+        ManagerMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { mop = &(_wh->mop); }
         void login() const;
 
       private:
@@ -61,7 +63,7 @@ class Menu {
         Warehouse::CourierOperation *cop;
 
       public:
-        CourierMenu(Warehouse *_wh) : SubMenu(_wh) { cop = &(_wh->cop); }
+        CourierMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { cop = &(_wh->cop); }
         void login() const;
 
       private:
@@ -76,7 +78,7 @@ class Menu {
     UserMenu um;
     ManagerMenu mm;
     CourierMenu cm;
-    Menu(Warehouse *_wh) : wh(_wh), um(_wh), mm(_wh), cm(_wh) {}
+    Menu(Warehouse *_wh, int _cliSock) : wh(_wh), cliSock(cliSock), um(_wh, cliSock), mm(_wh, cliSock), cm(_wh, cliSock) {}
     void start() const;
 };
 

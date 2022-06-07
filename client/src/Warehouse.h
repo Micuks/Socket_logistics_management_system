@@ -10,6 +10,7 @@ using namespace std;
 
 extern Console con;
 class Warehouse {
+    int cliSock;
     class Data {
       public:
         PackageList pl;
