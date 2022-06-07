@@ -5,11 +5,13 @@
 #include "History.h"
 #include "Package.h"
 #include "User.h"
+#include "ServerSocket.h"
 #include <bits/stdc++.h>
 using namespace std;
 
 extern Console con;
 class Warehouse {
+    ServerSocket *pServer;
     class Data {
       public:
         PackageList pl;
@@ -41,9 +43,11 @@ class Warehouse {
   public:
     class Operation {
         Data *data;
+        ServerSocket *pServer;
 
       public:
-        Operation(Data *_data) : data(_data) {}
+        Operation(Data *_data, ServerSocket *_pServer)
+            : data(_data), pServer(_pServer) {}
         int printPackage() const;
         int printUser() const;
         int printCourier() const;
@@ -65,11 +69,15 @@ class Warehouse {
     } op;
     class ManagerOperation {
         Data *data;
+        ServerSocket *pServer;
         string mp;
         Manager m;
 
       public:
-        ManagerOperation(Data *_data) : data(_data) { setManager(); }
+        ManagerOperation(Data *_data, ServerSocket *_pServer)
+            : data(_data), pServer(_pServer) {
+            setManager();
+        }
         void setManager();
         int getWallet() const;
         void chargeMWallet(const int &val);
@@ -91,13 +99,15 @@ class Warehouse {
 
     class UserOperation {
         Data *data;
+        ServerSocket *pServer;
         string uid, up;
         User u;
         string addHistory(const string &pid, const string &rid) const;
 
       public:
         void initSRHis();
-        UserOperation(Data *_data) : data(_data) {}
+        UserOperation(Data *_data, ServerSocket *_pServer)
+            : data(_data), pServer(_pServer) {}
         void billManager(const string &ptype, const string &quantity);
         bool billPackage(const string &ptype, const string &quantity);
         void setUser(const string &_uid);
@@ -123,6 +133,7 @@ class Warehouse {
     } uop;
     class CourierOperation {
         Data *data;
+        ServerSocket *pServer;
         string cid, cp;
         Courier c;
 
@@ -130,7 +141,8 @@ class Warehouse {
         void initColHis();
         string getCid() const;
         double getWallet() const;
-        CourierOperation(Data *_data) : data(_data){};
+        CourierOperation(Data *_data, ServerSocket *_pServer)
+            : data(_data), pServer(_pServer){};
         void setCourier(const string _cid);
         void chargeWallet(const double &val);
         void finColl(const string &hid);
@@ -143,9 +155,9 @@ class Warehouse {
         void changeCpasswd(const string &s);
         bool isCollAble(const string &hid) const;
     } cop;
-    Warehouse()
-        : op(Operation(&data)), mop(ManagerOperation(&data)),
-          cop(CourierOperation(&data)), uop(UserOperation(&data)) {}
+    Warehouse(ServerSocket *_pServer)
+        : pServer(_pServer), op(Operation(&data, _pServer)), mop(ManagerOperation(&data, _pServer)),
+          cop(CourierOperation(&data, _pServer)), uop(UserOperation(&data, _pServer)) {}
 };
 
 #endif

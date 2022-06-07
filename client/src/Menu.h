@@ -2,29 +2,36 @@
 #define MENU_H
 
 #include "Warehouse.h"
+#include "ClientSocket.h"
 #include <bits/stdc++.h>
 using namespace std;
+
+const string USER = "1";
+const string COURIER = "2";
+const string MANAGER = "3";
+const string EXIT = "4";
+const string OK = "ok";
 
 // Menu
 class Menu {
     Warehouse *wh;
-    int cliSock;
+    ClientSocket *pClient;
     class SubMenu {
         Warehouse *wh;
 
       protected:
         Warehouse::Operation *op;
-        int cliSock;
+        ClientSocket *pClient;
         void schPackage() const;
 
       public:
-        SubMenu(Warehouse *_wh, int _cliSock) : wh(_wh), cliSock(_cliSock), op(&(_wh->op)) {}
+        SubMenu(Warehouse *_wh, ClientSocket *_pClient) : wh(_wh), pClient(_pClient), op(&(_wh->op)) {}
     };
     class UserMenu : public SubMenu {
         Warehouse::UserOperation *uop;
 
       public:
-        UserMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { uop = &(_wh->uop); }
+        UserMenu(Warehouse *_wh, ClientSocket *_pClient) : SubMenu(_wh, _pClient) { uop = &(_wh->uop); }
         void login() const;
 
       private:
@@ -40,7 +47,7 @@ class Menu {
         Warehouse::ManagerOperation *mop;
 
       public:
-        ManagerMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { mop = &(_wh->mop); }
+        ManagerMenu(Warehouse *_wh, ClientSocket *_pCliSock) : SubMenu(_wh, _pCliSock) { mop = &(_wh->mop); }
         void login() const;
 
       private:
@@ -63,7 +70,7 @@ class Menu {
         Warehouse::CourierOperation *cop;
 
       public:
-        CourierMenu(Warehouse *_wh, int _cliSock) : SubMenu(_wh, _cliSock) { cop = &(_wh->cop); }
+        CourierMenu(Warehouse *_wh, ClientSocket *_pCliSock) : SubMenu(_wh, _pCliSock) { cop = &(_wh->cop); }
         void login() const;
 
       private:
@@ -78,7 +85,7 @@ class Menu {
     UserMenu um;
     ManagerMenu mm;
     CourierMenu cm;
-    Menu(Warehouse *_wh, int _cliSock) : wh(_wh), cliSock(cliSock), um(_wh, cliSock), mm(_wh, cliSock), cm(_wh, cliSock) {}
+    Menu(Warehouse *_wh, ClientSocket *_pClient) : wh(_wh), pClient(_pClient), um(_wh, _pClient), mm(_wh, _pClient), cm(_wh, _pClient) {}
     void start() const;
 };
 

@@ -48,8 +48,15 @@ void Menu::start() const {
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
         }
-        if (s == "1")
+        if (s == "1") {
+            pClient->send(USER.c_str());
+            string msg = pClient->receive();
+            if (msg != "ok") {
+                perror("user menu error");
+                exit(EXIT_FAILURE);
+            }
             um.login();
+        }
         if (s == "2")
             cm.login();
         if (s == "3")

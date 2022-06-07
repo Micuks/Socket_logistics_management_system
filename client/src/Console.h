@@ -2,6 +2,10 @@
 #define CONSOLE_H
 
 #include <bits/stdc++.h>
+#include "ClientSocket.h"
+const string serverAddr = "127.0.0.1";
+const int port = 57601;
+
 using namespace std;
 
 class Console {
@@ -14,6 +18,8 @@ class Console {
     string usrDir(const string &s);
     string hisDir(const string &s);
     string couDir(const string &s);
+    void recvData();
+    void sendData();
 };
 
 template <typename T> void Console::inFile(const string &s, T &t) {

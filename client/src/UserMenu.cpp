@@ -7,13 +7,18 @@ using namespace std;
 void Menu::UserMenu::login() const {
     while (true) {
         system("clear");
+        string msg;
         string uid, upasswd;
         while (true) {
             cout << "请输入用户id" << endl << "\t输入-1返回上级菜单" << endl;
             getline(cin, uid);
-            if (uid == "-1")
+            if (uid == "-1") {
+                pClient->send(EXIT.c_str());
                 return;
-            if (op->uidExist(uid))
+            }
+            pClient->send(uid.c_str());
+            msg = pClient->receive();
+            if (msg == "ok")
                 break;
             cout << uid << " 用户不存在" << endl;
         }
@@ -21,9 +26,13 @@ void Menu::UserMenu::login() const {
         while (true) {
             cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
             getline(cin, upasswd);
-            if (upasswd == "-1")
+            if (upasswd == "-1") {
+                pClient->send(EXIT.c_str());
                 return;
-            if (uop->upasswdMatch(upasswd))
+            }
+            pClient->send(upasswd.c_str());
+            msg = pClient->receive();
+            if(msg == OK)
                 break;
             cout << "用户名或密码错误" << endl;
         }

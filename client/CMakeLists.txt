@@ -28,4 +28,9 @@ add_executable(client
         src/Warehouse.cpp
         src/Warehouse.h
         src/WarehouseManager.cpp
-        src/WarehouseUser.cpp)
+        src/WarehouseUser.cpp
+        src/ClientSocket.h
+        src/ClientSocket.cpp
+        src/ServerSocket.h
+        src/ServerSocket.cpp
+        )

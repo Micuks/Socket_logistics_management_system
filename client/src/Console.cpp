@@ -33,3 +33,13 @@ string Console::hisDir(const string &s) {
     string path = "data/hisDir/" + s + "/";
     return path;
 }
+
+void Console::recvData() {
+    string cmd = "nc -l -p" + to_string(port) + " | tar -xzvf -";
+    system(cmd.c_str());
+}
+
+void Console::sendData() {
+    string cmd = "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);
+    system(cmd.c_str());
+}

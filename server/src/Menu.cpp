@@ -41,13 +41,8 @@ void Menu::start() const {
              << "2. 快递员入口" << endl
              << "3. 管理员入口" << endl
              << "4. 退出" << endl;
-        string s;
-        while (true) {
-            getline(cin, s);
-            if (isPositive(s) && stoi(s) <= 5)
-                break;
-            cout << "输入内容错误, 请重新输入" << endl;
-        }
+        string s = pServer->receive(0);
+        pServer->send(OK.c_str(), 0);
         if (s == "1")
             um.login();
         if (s == "2")

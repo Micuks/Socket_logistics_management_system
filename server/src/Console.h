@@ -3,7 +3,8 @@
 
 #include <bits/stdc++.h>
 using namespace std;
-
+const string serverAddr = "127.0.0.1";
+const int port = 57601;
 class Console {
   public:
     template <typename T> void inFile(const string &s, T &t);
@@ -14,6 +15,8 @@ class Console {
     string usrDir(const string &s);
     string hisDir(const string &s);
     string couDir(const string &s);
+    void sendData();
+    void recvData();
 };
 
 template <typename T> void Console::inFile(const string &s, T &t) {

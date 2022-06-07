@@ -2,27 +2,37 @@
 #define MENU_H
 
 #include "Warehouse.h"
+#include "ServerSocket.h"
 #include <bits/stdc++.h>
 using namespace std;
+
+const string USER = "1";
+const string COURIER = "2";
+const string MANAGER = "3";
+const string EXIT = "4";
+const string OK = "ok";
+const string NOK = "nok";
 
 // Menu
 class Menu {
     Warehouse *wh;
+    ServerSocket *pServer;
     class SubMenu {
         Warehouse *wh;
 
       protected:
         Warehouse::Operation *op;
+        ServerSocket *pServer;
         void schPackage() const;
 
       public:
-        SubMenu(Warehouse *_wh) : wh(_wh), op(&(_wh->op)) {}
+        SubMenu(Warehouse *_wh, ServerSocket *_pServer) : pServer(_pServer), wh(_wh), op(&(_wh->op)) {}
     };
     class UserMenu : public SubMenu {
         Warehouse::UserOperation *uop;
 
       public:
-        UserMenu(Warehouse *_wh) : SubMenu(_wh) { uop = &(_wh->uop); }
+        UserMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { uop = &(_wh->uop); }
         void login() const;
 
       private:
@@ -38,7 +48,7 @@ class Menu {
         Warehouse::ManagerOperation *mop;
 
       public:
-        ManagerMenu(Warehouse *_wh) : SubMenu(_wh) { mop = &(_wh->mop); }
+        ManagerMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { mop = &(_wh->mop); }
         void login() const;
 
       private:
@@ -61,7 +71,7 @@ class Menu {
         Warehouse::CourierOperation *cop;
 
       public:
-        CourierMenu(Warehouse *_wh) : SubMenu(_wh) { cop = &(_wh->cop); }
+        CourierMenu(Warehouse *_wh, ServerSocket *_pServer) : SubMenu(_wh, _pServer) { cop = &(_wh->cop); }
         void login() const;
 
       private:
@@ -76,7 +86,7 @@ class Menu {
     UserMenu um;
     ManagerMenu mm;
     CourierMenu cm;
-    Menu(Warehouse *_wh) : wh(_wh), um(_wh), mm(_wh), cm(_wh) {}
+    Menu(Warehouse *_wh, ServerSocket *_pServer) : pServer(_pServer), wh(_wh), um(_wh, _pServer), mm(_wh, _pServer), cm(_wh, _pServer) {}
     void start() const;
 };
 

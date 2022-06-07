@@ -10,21 +10,27 @@ void Menu::UserMenu::login() const {
         string uid, upasswd;
         while (true) {
             cout << "请输入用户id" << endl << "\t输入-1返回上级菜单" << endl;
-            getline(cin, uid);
-            if (uid == "-1")
+            uid = pServer->receive(0);
+            if (uid == EXIT)
                 return;
-            if (op->uidExist(uid))
+            if (op->uidExist(uid)) {
+                pServer->send(OK.c_str(), 0);
                 break;
+            }
             cout << uid << " 用户不存在" << endl;
+            pServer->send(NOK.c_str(), 0);
         }
         uop->setUser(uid);
         while (true) {
             cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
-            getline(cin, upasswd);
-            if (upasswd == "-1")
+            upasswd = pServer->receive(0);
+            if (upasswd == EXIT)
                 return;
-            if (uop->upasswdMatch(upasswd))
+            if (uop->upasswdMatch(upasswd)) {
+                pServer->send(OK.c_str(), 0);
                 break;
+            }
+            pServer->send(NOK.c_str(), 0);
             cout << "用户名或密码错误" << endl;
         }
         start();
