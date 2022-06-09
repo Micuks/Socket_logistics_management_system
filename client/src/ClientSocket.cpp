@@ -2,66 +2,74 @@
 
 ClientSocket::ClientSocket() {}
 
-ClientSocket::ClientSocket(const char* hostName, int portNum) {
+ClientSocket::ClientSocket(const char *hostName, int portNum) {
     this->setSocket(hostName, portNum);
 }
 
-void ClientSocket::setSocket(const char* hostName, int portNum) {
+void ClientSocket::setSocket(const char *hostName, int portNum) {
     if (this->setUp)
         throw std::logic_error("Socket already set");
-    
+
     this->portNumber = portNum;
-    
+
     int returnVal;
-    
+
     addrinfo hints;
-    addrinfo* serverAddressList;
-    
+    addrinfo *serverAddressList;
+
     memset(&hints, 0, sizeof(hints));
     hints.ai_family = AF_UNSPEC;
     hints.ai_socktype = SOCK_STREAM;
-    
-    returnVal = getaddrinfo(hostName, std::to_string(portNum).c_str(), &hints, &serverAddressList);
-    
-    //Check for an error with getaddrinfo()
+
+    returnVal = getaddrinfo(hostName, std::to_string(portNum).c_str(), &hints,
+                            &serverAddressList);
+
+    // Check for an error with getaddrinfo()
     if (returnVal != 0) {
-        throw std::runtime_error(strcat((char *)"ERROR getting host address: ", gai_strerror(returnVal)));
+        throw std::runtime_error(strcat((char *)"ERROR getting host address: ",
+                                        gai_strerror(returnVal)));
     }
-    
-    //Set the first host in the list to the desired host
+
+    // Set the first host in the list to the desired host
     addrinfo serverAddress = *serverAddressList;
-    
-    this->connectionSocket = socket(serverAddress.ai_family, serverAddress.ai_socktype, serverAddress.ai_protocol);
-    
-    //Checks for errors initializing socket
+
+    this->connectionSocket =
+        socket(serverAddress.ai_family, serverAddress.ai_socktype,
+               serverAddress.ai_protocol);
+
+    // Checks for errors initializing socket
     if (socket < 0)
-        throw std::runtime_error(strcat((char *)"ERROR opening socket: ", strerror(errno)));
-    
-    if (connect(this->connectionSocket, serverAddress.ai_addr, serverAddress.ai_addrlen) < 0)
-        throw std::runtime_error(strcat((char *)"ERROR connecting: ", strerror(errno)));
-    
+        throw std::runtime_error(
+            strcat((char *)"ERROR opening socket: ", strerror(errno)));
+
+    if (connect(this->connectionSocket, serverAddress.ai_addr,
+                serverAddress.ai_addrlen) < 0)
+        throw std::runtime_error(
+            strcat((char *)"ERROR connecting: ", strerror(errno)));
+
     freeaddrinfo(serverAddressList);
-    
+
     this->setUp = true;
 }
 
-std::string ClientSocket::send(const char* message, bool ensureFullStringSent) {
+std::string ClientSocket::send(const char *message, bool ensureFullStringSent) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
-    
-    //Empty messages won't be sent
+
+    // Empty messages won't be sent
     if (std::string(message) == "") {
         message = "none";
         throw std::logic_error("No message to send");
-//        std::perror("No message to send");
+        //        std::perror("No message to send");
     }
 
     unsigned long messageLength = strlen(message);
-    
+
     long sentSize = write(this->connectionSocket, message, messageLength);
-    
+
     if (sentSize < 0) {
-        throw std::runtime_error(strcat((char *)"ERROR sending message: ", strerror(errno)));
+        throw std::runtime_error(
+            strcat((char *)"ERROR sending message: ", strerror(errno)));
     } else if (sentSize < messageLength) {
         std::string extraStr;
         for (unsigned long a = sentSize; a < messageLength; a++) {
@@ -76,51 +84,54 @@ std::string ClientSocket::send(const char* message, bool ensureFullStringSent) {
     return "";
 }
 
-std::string ClientSocket::receive(bool* socketClosed) {
+std::string ClientSocket::receive(bool *socketClosed) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
-    
-    //Initialize the buffer where received info is stored
+
+    // Initialize the buffer where received info is stored
     bzero(this->buffer, BUFFER_SIZE);
-    
+
     long messageSize;
-    
+
     messageSize = read(this->connectionSocket, this->buffer, BUFFER_SIZE);
-    
-    //Checks for errors reading from the socket
+
+    // Checks for errors reading from the socket
     if (messageSize < 0)
-        throw std::runtime_error(strcat((char *)"ERROR reading from socket: ", strerror(errno)));
-    
+        throw std::runtime_error(
+            strcat((char *)"ERROR reading from socket: ", strerror(errno)));
+
     if (socketClosed != nullptr && messageSize == 0) {
         *socketClosed = true;
     }
-    
+
     std::string str = std::string(buffer, messageSize);
-    
-    //Check if there is more data waiting to be read, and if so, read it
+
+    // Check if there is more data waiting to be read, and if so, read it
     fd_set readfds;
     FD_ZERO(&readfds);
     FD_SET(this->connectionSocket, &readfds);
     int n = this->connectionSocket + 1;
-    
+
     struct timeval timeout;
     timeout.tv_sec = 0;
     timeout.tv_usec = 20000;
-    
+
     int returnValue = select(n, &readfds, NULL, NULL, &timeout);
     if (returnValue < 0) {
-        throw std::runtime_error(std::string("ERROR finding information about socket: ") + std::string(strerror(errno)));
+        throw std::runtime_error(
+            std::string("ERROR finding information about socket: ") +
+            std::string(strerror(errno)));
     } else if (returnValue > 0) {
         str += this->receive();
     }
-    
+
     return str;
 }
 
 void ClientSocket::close() {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
-    
+
     ::close(this->connectionSocket);
     portNumber = 0;
     this->setUp = false;
@@ -129,26 +140,26 @@ void ClientSocket::close() {
 void ClientSocket::setTimeout(unsigned int seconds, unsigned int milliseconds) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
-    
+
 #if defined(_WIN32)
     DWORD timeout = (seconds * 1000) + milliseconds;
-    setsockopt(this->hostSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
+    setsockopt(this->hostSocket, SOL_SOCKET, SO_RCVTIMEO,
+               (const char *)&timeout, sizeof(timeout));
 #else
     struct timeval time;
     time.tv_sec = seconds;
     time.tv_usec = (milliseconds * 1000);
-    
-    setsockopt(this->connectionSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&time, sizeof(time));
+
+    setsockopt(this->connectionSocket, SOL_SOCKET, SO_RCVTIMEO,
+               (const char *)&time, sizeof(time));
 #endif
 }
 
-bool ClientSocket::getSet() const {
-    return this->setUp;
-}
+bool ClientSocket::getSet() const { return this->setUp; }
 
 ClientSocket::~ClientSocket() {
     if (this->setUp) {
-        //Properly terminate the sockets
+        // Properly terminate the sockets
         try {
             ::close(this->connectionSocket);
         } catch (...) {
