@@ -68,6 +68,6 @@ void Menu::start() const {
 
 void Menu::quit() {
     cout << "exiting..." << endl;
-    con.sendData();
+//    con.sendData();
     exit(0);
 }

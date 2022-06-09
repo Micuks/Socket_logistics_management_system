@@ -7,13 +7,18 @@ using namespace std;
 void Menu::ManagerMenu::login() const {
     while (true) {
         system("clear");
+        string msg;
         string mpasswd;
         while (true) {
             cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
             getline(cin, mpasswd);
-            if (mpasswd == "-1")
+            if (mpasswd == "-1") {
+                pClient->send("-1");
                 return;
-            if (mop->mpasswdMatch(mpasswd))
+            }
+            pClient->send(mpasswd.c_str());
+            msg = pClient->receive();
+            if(msg == OK)
                 break;
             cout << "用户名或密码错误" << endl;
         }

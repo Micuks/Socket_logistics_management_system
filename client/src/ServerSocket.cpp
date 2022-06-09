@@ -8,14 +8,6 @@ ServerSocket::ServerSocket(int portNum, int maxConnections) {
 
 //Static functions
 
-std::string ServerSocket::getHostName() {
-    char name[1024];
-    if (gethostname(name, 1024) < 0) { //Fill name with the host name. Then, if an error occurred, throw an exception
-        throw std::runtime_error(strcat((char *)"ERROR getting host name: ", strerror(errno)));
-    }
-    return std::string(name);
-}
-
 //Public member functions
 
 void ServerSocket::setSocket(int portNum, int maxConnections) {
@@ -198,18 +190,6 @@ std::string ServerSocket::send(const char* message, unsigned int clientIndex, bo
     return ""; //Full string was sent
 }
 
-void ServerSocket::broadcast(const char* message, bool ensureFullStringSent) {
-    if (!this->setUp)
-        throw std::logic_error("Socket not set");
-    
-    //Send the message to each active client
-    for (int a = 0; a < this->activeConnections.size(); a++) {
-        if (this->activeConnections[a]) {
-            this->send(message, a, ensureFullStringSent);
-        }
-    }
-}
-
 std::string ServerSocket::receive(unsigned int clientIndex, bool* socketClosed) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
@@ -264,20 +244,6 @@ std::string ServerSocket::receive(unsigned int clientIndex, bool* socketClosed) 
     }
     
     return str;
-}
-
-bool ServerSocket::receivedFromAll(const char* messageToCompare) {
-    if (!this->setUp)
-        throw std::logic_error("Socket not set");
-    
-    //If each client sent the same message, return true
-    for (int a = 0; a < this->activeConnections.size(); a++) {
-        bool connectionClosed = false;
-        if (this->activeConnections[a] && this->receive(a, &connectionClosed) != messageToCompare) { //Also closes sockets that closed on client side
-            return false;
-        }
-    }
-    return true;
 }
 
 void ServerSocket::setTimeout(unsigned int seconds, unsigned int milliseconds) {

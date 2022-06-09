@@ -46,13 +46,12 @@ void Console::sendData() {
 }
 
 void Console::backupData() {
-    string cmd = "mv data/ data_bak/";
+    string cmd = "cp -r data data_bak";
     system(cmd.c_str());
-    rmDir("data/");
 }
 
 void Console::recoverData() {
     rmDir("data/");
-    string cmd = "mv data_bak/ data/";
+    string cmd = "mv data_bak data";
     system(cmd.c_str());
 }

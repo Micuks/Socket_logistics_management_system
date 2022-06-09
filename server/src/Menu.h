@@ -9,7 +9,6 @@ using namespace std;
 const string USER = "1";
 const string COURIER = "2";
 const string MANAGER = "3";
-const string EXIT = "4";
 const string OK = "ok";
 const string NOK = "nok";
 

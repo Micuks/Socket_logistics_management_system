@@ -10,12 +10,15 @@ void Menu::ManagerMenu::login() const {
         string mpasswd;
         while (true) {
             cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
-            getline(cin, mpasswd);
-            if (mpasswd == "-1")
+            mpasswd = pServer->receive(0);
+            if(mpasswd == "-1")
                 return;
-            if (mop->mpasswdMatch(mpasswd))
+            if (mop->mpasswdMatch(mpasswd)) {
+                pServer->send(OK.c_str(), 0);
                 break;
-            cout << "用户名或密码错误" << endl;
+            }
+            cout << "密码错误" << endl;
+            pServer->send(NOK.c_str(), 0);
         }
         start();
     }

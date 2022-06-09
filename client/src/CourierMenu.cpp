@@ -9,13 +9,18 @@ void Menu::CourierMenu::login() const {
     while (true) {
         system("clear");
         cout << "快递员登录界面" << endl;
+        string msg;
         string cid, cpasswd;
         while (true) {
             cout << "请输入快递员id(输入-1返回上级菜单)" << endl;
             getline(cin, cid);
-            if (cid == "-1")
+            if (cid == "-1") {
+                pClient->send("-1");
                 return;
-            if (op->cidExist(cid))
+            }
+            pClient->send(cid.c_str());
+            msg = pClient->receive();
+            if(msg == "ok")
                 break;
             cout << cid << "快递员不存在" << endl;
         }
@@ -23,9 +28,13 @@ void Menu::CourierMenu::login() const {
         while (true) {
             cout << "请输入密码(输入-1返回上级菜单)" << endl;
             getline(cin, cpasswd);
-            if (cid == "-1")
+            if (cid == "-1") {
+                pClient->send("-1");
                 return;
-            if (cop->cpasswdMatch(cpasswd))
+            }
+            pClient->send(cpasswd.c_str());
+            msg = pClient->receive();
+            if(msg == OK)
                 break;
             cout << cid << "用户名或密码错误" << endl;
         }

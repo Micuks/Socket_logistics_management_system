@@ -56,7 +56,8 @@ void Menu::start() const {
 
 void Menu::quit() {
     cout << "exiting...";
-    con.backupData();
-    con.rmDir("data/");
-    con.recvData();
+//    con.backupData();
+//    con.rmDir("data/");
+//    con.recvData();
+    exit(0);
 }

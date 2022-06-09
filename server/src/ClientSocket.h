@@ -1,5 +1,5 @@
-#ifndef ClientSocket_hpp
-#define ClientSocket_hpp
+#ifndef CLIENTSOCKET_H
+#define CLIENTSOCKET_H
 
 #include <iostream>
 #include <string>

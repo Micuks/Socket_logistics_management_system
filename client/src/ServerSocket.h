@@ -6,8 +6,8 @@
 //  Copyright © 2016 Jake Sanders. All rights reserved.
 //
 
-#ifndef ServerSocket_hpp
-#define ServerSocket_hpp
+#ifndef SERVERSOCKET_H
+#define SERVERSOCKET_H
 
 #include <string>
 #include <vector>
@@ -35,14 +35,7 @@ public:
     ~ServerSocket();
     
     //Static functions
-    
-    /*!
-     * Returns the name of the host computer. Throws an error if the gethostname() from the standard C library fails.
-     *
-     * @return The name of the host.
-     */
-    static std::string getHostName();
-    
+
     //Public member functions
     
     /*!
@@ -77,14 +70,6 @@ public:
     std::string send(const char* message, unsigned int clientIndex, bool ensureFullStringSent = false);
     
     /*!
-     * A function that sends a message to all clients. An error will be thrown if the socket is not set or if an error occurs in sending the message to any of the clients. If the optional parameter is set to true, an error will also be thrown if only part of the message was thrown.
-     *
-     * @param message The message to be sent, as a const char*.
-     * @param ensureFullStringSent An optional parameter that will make sure the full string is sent if it is too long to send with one call of write(). It is automatically set to false (so the rest of the string is not sent, but rather discarded.
-     */
-    void broadcast(const char* message, bool ensureFullStringSent = false);
-    
-    /*!
      * A function that receives a message from a single client. The function will wait for a short period for the client to send the message, and if the message is not received it will throw an error. An error is also thrown if the index is out of range or if the socket is not set.
      *
      * @param clientIndex An unsigned int indicating the index of the client from whom to receive the message.
@@ -93,15 +78,6 @@ public:
      * @return The received message from the specified client as a std::string.
      */
     std::string receive(unsigned int clientIndex, bool* socketClosed = nullptr);
-    
-    /*!
-     * A function that checks if all clients sent a specific message. This function calls ServerSocket::receive() so if another message has been sent that message may be received instead, and thus will not be read or returned by the server. This function throws no errors other than those called by ServerSocket::receive() or ServerSocket::closeConnection(). Any sockets where connection was lost are automatically closed.
-     *
-     * @param messageToCompare The message that is checked with all clients, as a const char*.
-     *
-     * @return True if all clients sent the same message as the one passed in. False otherwise.
-     */
-    bool receivedFromAll(const char* messageToCompare);
     
     /*!
      * A function to set a timeout for reading from the socket, until otherwise specified. If a socket times out and receive()'s optional bool pointer has been into it, then it will indicate the socket closed. To reset to no timeout, set seconds to 0. Only set for the connections with other clients.

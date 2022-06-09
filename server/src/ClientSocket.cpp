@@ -176,10 +176,6 @@ void ClientSocket::setTimeout(unsigned int seconds, unsigned int milliseconds) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
     
-#if defined(_WIN32)
-    DWORD timeout = (seconds * 1000) + milliseconds;
-    setsockopt(this->hostSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&timeout, sizeof(timeout));
-#else
     struct timeval time; //Time holds the maximum time to wait
     time.tv_sec = seconds;
     time.tv_usec = (milliseconds * 1000);
@@ -194,7 +190,6 @@ void ClientSocket::setTimeout(unsigned int seconds, unsigned int milliseconds) {
      The third argument tells what setting to change. SO_RCVTIMEO indicates the socket option is for the amount of time to wait while timing out.
      */
     setsockopt(this->connectionSocket, SOL_SOCKET, SO_RCVTIMEO, (const char*)&time, sizeof(time));
-#endif
 }
 
 bool ClientSocket::getSet() const {
