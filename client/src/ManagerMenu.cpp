@@ -18,7 +18,7 @@ void Menu::ManagerMenu::login() const {
             }
             pClient->send(mpasswd.c_str());
             msg = pClient->receive();
-            if(msg == OK)
+            if (msg == OK)
                 break;
             cout << "用户名或密码错误" << endl;
         }
@@ -29,6 +29,7 @@ void Menu::ManagerMenu::login() const {
 void Menu::ManagerMenu::start() const {
     while (true) {
         system("clear");
+        string msg;
         mop->setManager();
         cout << "当前余额为" << mop->getWallet() << endl;
         cout << "1. 查看所有用户" << endl
@@ -50,6 +51,7 @@ void Menu::ManagerMenu::start() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 16)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -95,6 +97,7 @@ void Menu::ManagerMenu::printUser() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
@@ -104,6 +107,7 @@ void Menu::ManagerMenu::printCourier() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
@@ -113,6 +117,7 @@ void Menu::ManagerMenu::printPackage() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
@@ -122,25 +127,29 @@ void Menu::ManagerMenu::printHistory() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
 void Menu::ManagerMenu::addUser() const {
     while (true) {
         system("clear");
+        string msg;
         string uid, uname, upasswd = "123456";
         while (true) {
             cout << "输入用户id(输入-1返回上级菜单)" << endl;
             getline(cin, uid);
+            pClient->send(uid.c_str());
             if (uid == "-1")
                 return;
-            replace(uid, " ", "_");
-            if (!op->uidExist(uid))
+            msg = pClient->receive();
+            if (msg == OK)
                 break;
-            cout << "此uid已被占用" << endl;
+            cout << msg << endl;
         }
         cout << "输入你的名字(输入-1返回上级菜单)" << endl;
         getline(cin, uname);
+        pClient->send(uname.c_str());
         if (uname == "-1")
             return;
         replace(uname, " ", "_");
@@ -156,6 +165,7 @@ void Menu::ManagerMenu::addUser() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容错误, 清重新输入" << endl;
@@ -172,25 +182,29 @@ void Menu::ManagerMenu::addUser() const {
 void Menu::ManagerMenu::addCourier() const {
     while (true) {
         system("clear");
+        string msg;
         string uid, uname, upasswd = "123456", tel;
         while (true) {
             cout << "输入快递员id(输入-1返回上级菜单)" << endl;
             getline(cin, uid);
+            pClient->send(uid.c_str());
             if (uid == "-1")
                 return;
-            replace(uid, " ", "_");
-            if (!op->cidExist(uid))
+            msg = pClient->receive();
+            if (msg == OK)
                 break;
-            cout << "此cid已被占用" << endl;
+            cout << msg << endl;
         }
         cout << "输入快递员名字(输入-1返回上级菜单)" << endl;
         getline(cin, uname);
+        pClient->send(uname.c_str());
         if (uname == "-1")
             return;
         replace(uname, " ", "_");
         while (true) {
             cout << "输入快递员电话号码(输入-1返回上级菜单)" << endl;
             getline(cin, tel);
+            pClient->send(tel.c_str());
             if (tel == "-1")
                 return;
             if (isPositive(tel))
@@ -210,6 +224,7 @@ void Menu::ManagerMenu::addCourier() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容错误, 清重新输入" << endl;
@@ -227,13 +242,16 @@ void Menu::ManagerMenu::delUser() const {
     while (true) {
         system("clear");
         string uid;
+        string msg;
         while (true) {
             cout << "输入待删除用户的uid(输入-1返回上级菜单)" << endl;
             getline(cin, uid);
+            pClient->send(uid.c_str());
             if (uid == "-1")
                 return;
-            else if (!op->uidExist(uid))
-                cout << "uid为 " << uid << " 的用户不存在, 请重试" << endl;
+            msg = pClient->receive();
+            if (msg != OK)
+                cout << msg << endl;
             else
                 break;
         }
@@ -249,6 +267,7 @@ void Menu::ManagerMenu::delUser() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -266,13 +285,16 @@ void Menu::ManagerMenu::delCourier() const {
     while (true) {
         system("clear");
         string uid;
+        string msg;
         while (true) {
             cout << "输入待删除快递员的uid(输入-1返回上级菜单)" << endl;
             getline(cin, uid);
+            pClient->send(uid.c_str());
             if (uid == "-1")
                 return;
-            else if (!op->cidExist(uid))
-                cout << "cid为 " << uid << " 的快递员不存在, 请重试" << endl;
+            msg = pClient->receive();
+            if (msg != OK)
+                cout << msg << endl;
             else
                 break;
         }
@@ -288,6 +310,7 @@ void Menu::ManagerMenu::delCourier() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -305,18 +328,20 @@ void Menu::ManagerMenu::collectPackage() const {
     while (true) {
         system("clear");
         op->printToCollPkg();
+        string msg;
         string pid, cid, hid;
         while (true) {
             cout << "输入要分发包裹的pid(输入-1返回上级菜单)" << endl;
             getline(cin, pid);
+            pClient->send(pid.c_str());
             if (pid == "-1")
                 return;
-            else if (pid[0] != 'P') {
-                cout << "输入的包裹pid格式错误" << endl;
+            msg = pClient->receive();
+            if (msg != OK) {
+                cout << msg << endl;
                 continue;
-            } else if (op->pidExist(pid))
+            } else
                 break;
-            cout << "包裹 " << pid << " 不存在";
         }
         hid = op->schPkgHis(pid);
 
@@ -326,11 +351,13 @@ void Menu::ManagerMenu::collectPackage() const {
         while (true) {
             cout << "输入揽收快递员的cid(输入-1返回上级菜单)" << endl;
             getline(cin, cid);
+            pClient->send(cid.c_str());
             if (cid == "-1")
                 return;
-            if (op->cidExist(cid))
+            msg = pClient->receive();
+            if (msg == OK)
                 break;
-            cout << "快递员 " << cid << " 不存在" << endl;
+            cout << msg << endl;
         }
 
         system("clear");
@@ -344,6 +371,7 @@ void Menu::ManagerMenu::collectPackage() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容有误, 请重新输入" << endl;
@@ -363,6 +391,7 @@ void Menu::ManagerMenu::schUser() const {
         cout << "请输入待搜索用户的关键字" << endl;
         string s;
         getline(cin, s);
+        pClient->send(s.c_str());
         mop->schUser(s);
         cout << "1. 继续搜索" << endl
              << "2. 返回上级菜单" << endl
@@ -370,6 +399,7 @@ void Menu::ManagerMenu::schUser() const {
         string k;
         while (true) {
             getline(cin, k);
+            pClient->send(k.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -389,6 +419,7 @@ void Menu::ManagerMenu::schCourier() const {
         cout << "请输入待搜索快递员的关键字" << endl;
         string s;
         getline(cin, s);
+        pClient->send(s.c_str());
         mop->schCourier(s);
         cout << "1. 继续搜索" << endl
              << "2. 返回上级菜单" << endl
@@ -396,6 +427,7 @@ void Menu::ManagerMenu::schCourier() const {
         string k;
         while (true) {
             getline(cin, k);
+            pClient->send(k.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -415,6 +447,7 @@ void Menu::ManagerMenu::schHistory() const {
         cout << "请输入待搜索历史记录的关键字" << endl;
         string s;
         getline(cin, s);
+        pClient->send(s.c_str());
         mop->schHistory(s);
         cout << "1. 继续搜索" << endl
              << "2. 返回上级菜单" << endl
@@ -422,6 +455,7 @@ void Menu::ManagerMenu::schHistory() const {
         string k;
         while (true) {
             getline(cin, k);
+            pClient->send(k.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -438,14 +472,17 @@ void Menu::ManagerMenu::schHistory() const {
 void Menu::ManagerMenu::changeMPasswd() const {
     system("clear");
     string upasswd, r_upasswd;
+    string msg;
     while (true) {
         cout << "输入旧密码(输入-1返回上级菜单)" << endl;
         getline(cin, upasswd);
+        pClient->send(upasswd.c_str());
         if (upasswd == "-1")
             return;
-        if (mop->mpasswdMatch(upasswd))
+        msg = pClient->receive();
+        if(msg == OK)
             break;
-        cout << "密码错误, 请重新输入" << endl;
+        cout << msg << endl;
     }
     cout << "密码正确" << endl;
 
@@ -453,6 +490,7 @@ void Menu::ManagerMenu::changeMPasswd() const {
         while (true) {
             cout << "输入新密码, 不能包含空格(输入-1返回上级菜单)" << endl;
             getline(cin, upasswd);
+            pClient->send(upasswd.c_str());
             if (upasswd == "-1")
                 return;
             if (upasswd.find(" ") == string::npos)
@@ -462,6 +500,7 @@ void Menu::ManagerMenu::changeMPasswd() const {
 
         cout << "请再次输入新密码(输入-1返回上级菜单)" << endl;
         getline(cin, r_upasswd);
+        pClient->send(r_upasswd.c_str());
         if (r_upasswd == "-1")
             return;
         if (r_upasswd == upasswd)
@@ -474,4 +513,5 @@ void Menu::ManagerMenu::changeMPasswd() const {
          << "输入任意字符返回" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
 }

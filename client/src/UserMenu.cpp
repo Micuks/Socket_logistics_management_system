@@ -200,18 +200,17 @@ void Menu::UserMenu::sendPackage() const {
 void Menu::UserMenu::recvPackage() const {
     while (true) {
         system("clear");
+        string msg;
         string pid, hid;
         while (true) {
             cout << "输入待签收包裹的pid(输入-1返回上级菜单)" << endl;
             getline(cin, pid);
+            pClient->send(pid.c_str());
             if (pid == "-1")
                 return;
-            else if (pid[0] != 'P')
-                cout << "包裹pid格式错误, 请重新输入" << endl;
-            else if ((hid = uop->schRecvHis(pid)) == "-1")
-                cout << "pid为 " << pid << " 的包裹不存在, 请重试" << endl;
-            else if (!uop->isRecvAble(hid))
-                cout << "该包裹现在不能签收, 请重试" << endl;
+            msg = pClient->receive();
+            if (msg != OK)
+                cout << msg << endl;
             else
                 break;
         }
@@ -229,6 +228,7 @@ void Menu::UserMenu::recvPackage() const {
         string s;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (isPositive(s) && stoi(s) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -248,6 +248,7 @@ void Menu::UserMenu::printSendHis() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
@@ -257,6 +258,7 @@ void Menu::UserMenu::printRecvHis() const {
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
     return;
 }
 
@@ -264,10 +266,12 @@ void Menu::UserMenu::chargeWallet() const {
     while (true) {
         system("clear");
         string s;
+        string msg;
         cout << "账户余额为 " << uop->getWallet()
              << ", 输入要充值的金额(输入-1返回上级菜单)" << endl;
         while (true) {
             getline(cin, s);
+            pClient->send(s.c_str());
             if (s == "-1")
                 return;
             if (isPositive(s) && stoi(s) <= INT_MAX)
@@ -284,6 +288,7 @@ void Menu::UserMenu::chargeWallet() const {
         string k;
         while (true) {
             getline(cin, k);
+            pClient->send(k.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -300,12 +305,15 @@ void Menu::UserMenu::chargeWallet() const {
 void Menu::UserMenu::changeUpasswd() const {
     system("clear");
     string upasswd, r_upasswd;
+    string msg;
     while (true) {
         cout << "输入旧密码(输入-1返回上级菜单)" << endl;
         getline(cin, upasswd);
+        pClient->send(upasswd.c_str());
         if (upasswd == "-1")
             return;
-        if (uop->upasswdMatch(upasswd))
+        msg = pClient->receive();
+        if(msg == OK)
             break;
         cout << "密码错误, 请重新输入" << endl;
     }
@@ -315,6 +323,7 @@ void Menu::UserMenu::changeUpasswd() const {
         while (true) {
             cout << "输入新密码, 不能包含空格(输入-1返回上级菜单)" << endl;
             getline(cin, upasswd);
+            pClient->send(upasswd.c_str());
             if (upasswd == "-1")
                 return;
             if (upasswd.find(" ") == string::npos)
@@ -324,6 +333,7 @@ void Menu::UserMenu::changeUpasswd() const {
 
         cout << "请再次输入新密码(输入-1返回上级菜单)" << endl;
         getline(cin, r_upasswd);
+        pClient->send(r_upasswd.c_str());
         if (r_upasswd == "-1")
             return;
         if (r_upasswd == upasswd)
@@ -336,4 +346,5 @@ void Menu::UserMenu::changeUpasswd() const {
          << "输入任意字符返回" << endl;
     string s;
     getline(cin, s);
+    pClient->send(s.c_str());
 }
