@@ -101,6 +101,9 @@ void Warehouse::CourierOperation::billCourier(const string &hid) {
     BaseHistory h = data->hl[hid];
     c.chargeWallet(stod(h.getFee()) * r);
     con.outFile(cp, c);
+
+    data->cl.del(cid);
+    data->cl.add(c.getBase());
 }
 
 void Warehouse::CourierOperation::changeCpasswd(const string &s) {

@@ -104,6 +104,7 @@ void Menu::CourierMenu::acceptPackage() const {
             else
                 break;
         }
+        hid = cop->schCollHis(pid);
 
         system("clear");
         cout << "揽收的包裹信息如下" << endl;

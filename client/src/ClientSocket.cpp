@@ -92,8 +92,8 @@ std::string ClientSocket::send(const char* message, bool ensureFullStringSent) {
     //Empty messages won't be sent
     if (std::string(message) == "") {
         message = "none";
-//        throw std::logic_error("No message to send");
-        std::perror("No message to send");
+        throw std::logic_error("No message to send");
+//        std::perror("No message to send");
     }
 
     unsigned long messageLength = strlen(message);

@@ -40,7 +40,7 @@ void Warehouse::CourierOperation::finColl(const string &hid) {
     con.outFile(hp, h);
     bh = h.getBase();
 
-    p.finColl(bh); // 32767行异常his
+    p.finColl(bh);
     con.outFile(pp, p);
 
     c.finColl(bh);

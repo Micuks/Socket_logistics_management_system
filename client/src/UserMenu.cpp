@@ -214,6 +214,7 @@ void Menu::UserMenu::recvPackage() const {
             else
                 break;
         }
+        hid = uop->schRecvHis(pid);
 
         system("clear");
         cout << "签收的包裹信息如下" << endl;

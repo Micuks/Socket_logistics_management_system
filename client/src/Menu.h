@@ -22,6 +22,7 @@ class Menu {
         Warehouse::Operation *op;
         ClientSocket *pClient;
         void schPackage() const;
+        void quit() const;
 
       public:
         SubMenu(Warehouse *_wh, ClientSocket *_pClient)
@@ -91,7 +92,7 @@ class Menu {
     };
 
   protected:
-    void static quit();
+    void quit() const;
 
   public:
     UserMenu um;

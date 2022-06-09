@@ -20,7 +20,7 @@ void Menu::SubMenu::schPackage() const {
         string k;
         while (true) {
             getline(cin, k);
-            pClient->send(s.c_str());
+            pClient->send(k.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -32,6 +32,11 @@ void Menu::SubMenu::schPackage() const {
         else
             quit();
     }
+}
+void Menu::SubMenu::quit() const {
+    cout << "exiting..." << endl;
+    pClient->close();
+    exit(0);
 }
 
 // Menu
@@ -68,8 +73,9 @@ void Menu::start() const {
     }
 }
 
-void Menu::quit() {
+void Menu::quit() const{
     cout << "exiting..." << endl;
 //    con.sendData();
+    pClient->close();
     exit(0);
 }

@@ -23,6 +23,7 @@ class Menu {
         Warehouse::Operation *op;
         ServerSocket *pServer;
         void schPackage() const;
+        void quit() const;
 
       public:
         SubMenu(Warehouse *_wh, ServerSocket *_pServer)
@@ -92,7 +93,7 @@ class Menu {
     };
 
   protected:
-    void static quit();
+    void quit() const;
 
   public:
     UserMenu um;

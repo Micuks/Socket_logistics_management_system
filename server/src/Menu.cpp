@@ -31,6 +31,11 @@ void Menu::SubMenu::schPackage() const {
             quit();
     }
 }
+void Menu::SubMenu::quit() const{
+    cout << "exiting..." << endl;
+    pServer->closeConnection(0);
+    exit(0);
+}
 
 // Menu
 void Menu::start() const {
@@ -54,10 +59,11 @@ void Menu::start() const {
     }
 }
 
-void Menu::quit() {
+void Menu::quit() const{
     cout << "exiting..." << endl;
 //    con.backupData();
 //    con.rmDir("data/");
 //    con.recvData();
+    pServer->closeConnection(0);
     exit(0);
 }
