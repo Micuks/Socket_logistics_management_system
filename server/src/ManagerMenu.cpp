@@ -6,7 +6,7 @@ using namespace std;
 
 void Menu::ManagerMenu::login() const {
     while (true) {
-        system("clear");
+
         string mpasswd;
         while (true) {
             cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
@@ -26,25 +26,9 @@ void Menu::ManagerMenu::login() const {
 
 void Menu::ManagerMenu::start() const {
     while (true) {
-        system("clear");
+
         mop->setManager();
         cout << "当前余额为" << mop->getWallet() << endl;
-        cout << "1. 查看所有用户" << endl
-             << "2. 查看所有包裹" << endl
-             << "3. 查看所有历史记录" << endl
-             << "4. 查看所有快递员" << endl
-             << "5. 查找用户" << endl
-             << "6. 查找包裹" << endl
-             << "7. 查找历史记录" << endl
-             << "8. 查找快递员" << endl
-             << "9. 分发快递" << endl
-             << "10. 添加用户" << endl
-             << "11. 删除用户" << endl
-             << "12. 添加快递员" << endl
-             << "13. 删除快递员" << endl
-             << "14. 修改密码" << endl
-             << "15. 返回上级菜单" << endl
-             << "16. 退出系统" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -88,7 +72,7 @@ void Menu::ManagerMenu::start() const {
 }
 
 void Menu::ManagerMenu::printUser() const {
-    system("clear");
+
     op->printUser();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -97,7 +81,7 @@ void Menu::ManagerMenu::printUser() const {
 }
 
 void Menu::ManagerMenu::printCourier() const {
-    system("clear");
+
     op->printCourier();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -106,7 +90,7 @@ void Menu::ManagerMenu::printCourier() const {
 }
 
 void Menu::ManagerMenu::printPackage() const {
-    system("clear");
+
     op->printPackage();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -115,7 +99,7 @@ void Menu::ManagerMenu::printPackage() const {
 }
 
 void Menu::ManagerMenu::printHistory() const {
-    system("clear");
+
     op->printHistory();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -125,7 +109,7 @@ void Menu::ManagerMenu::printHistory() const {
 
 void Menu::ManagerMenu::addUser() const {
     while (true) {
-        system("clear");
+
         string uid, uname, upasswd = "123456";
         stringstream ss;
         string msg;
@@ -152,13 +136,10 @@ void Menu::ManagerMenu::addUser() const {
         replace(uname, " ", "_");
         mop->addUser(User(uid, uname, upasswd, 0));
 
-        system("clear");
+
         cout << "用户添加成功, 初始密码为123456" << endl
              << "用户uid为 " << uid << endl
-             << "用户名字为 " << uname << endl
-             << "1. 继续添加" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+             << "用户名字为 " << uname << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -177,7 +158,7 @@ void Menu::ManagerMenu::addUser() const {
 
 void Menu::ManagerMenu::addCourier() const {
     while (true) {
-        system("clear");
+
         stringstream ss;
         string msg;
         string uid, uname, upasswd = "123456", tel;
@@ -213,14 +194,11 @@ void Menu::ManagerMenu::addCourier() const {
         }
         mop->addCourier(Courier(uid, uname, upasswd, tel, 0));
 
-        system("clear");
+
         cout << "用户添加成功, 初始密码为123456" << endl
              << "用户uid为 " << uid << endl
              << "用户名字为 " << uname << endl
-             << "用户电话号码为 " << tel << endl
-             << "1. 继续添加" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+             << "用户电话号码为 " << tel << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -239,7 +217,7 @@ void Menu::ManagerMenu::addCourier() const {
 
 void Menu::ManagerMenu::delUser() const {
     while (true) {
-        system("clear");
+
         string uid;
         string msg;
         stringstream ss;
@@ -263,11 +241,8 @@ void Menu::ManagerMenu::delUser() const {
         op->printUser(uid);
         mop->delUser(uid);
 
-        system("clear");
-        cout << "删除用户 " << uid << " 成功" << endl
-             << "1. 删除下一个用户" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+
+        cout << "删除用户 " << uid << " 成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -286,7 +261,7 @@ void Menu::ManagerMenu::delUser() const {
 
 void Menu::ManagerMenu::delCourier() const {
     while (true) {
-        system("clear");
+
         string uid;
         string msg;
         stringstream ss;
@@ -310,11 +285,8 @@ void Menu::ManagerMenu::delCourier() const {
         op->printCourier(uid);
         mop->delCourier(uid);
 
-        system("clear");
-        cout << "删除快递员 " << uid << " 成功" << endl
-             << "1. 删除下一个快递员" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+
+        cout << "删除快递员 " << uid << " 成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -333,7 +305,7 @@ void Menu::ManagerMenu::delCourier() const {
 
 void Menu::ManagerMenu::collectPackage() const {
     while (true) {
-        system("clear");
+
         op->printToCollPkg();
         string pid, cid, hid;
         string msg;
@@ -360,7 +332,7 @@ void Menu::ManagerMenu::collectPackage() const {
         }
         hid = op->schPkgHis(pid);
 
-        system("clear");
+
         cout << "要分发的包裹pid为 " << pid << endl;
         op->printCourier();
         while (true) {
@@ -379,14 +351,11 @@ void Menu::ManagerMenu::collectPackage() const {
             pServer->send(msg.c_str(), 0);
         }
 
-        system("clear");
+
         cout << "要分发的包裹pid为 " << pid << endl;
         cout << "揽收快递员为 " << cid << endl;
         mop->reqColl(hid, cid);
-        cout << "包裹分发成功" << endl
-             << "1. 分发下一个包裹" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+        cout << "包裹分发成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -405,14 +374,11 @@ void Menu::ManagerMenu::collectPackage() const {
 
 void Menu::ManagerMenu::schUser() const {
     while (true) {
-        system("clear");
+
         cout << "请输入待搜索用户的关键字" << endl;
         string s;
         s = pServer->receive(0);
         mop->schUser(s);
-        cout << "1. 继续搜索" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -431,14 +397,11 @@ void Menu::ManagerMenu::schUser() const {
 
 void Menu::ManagerMenu::schCourier() const {
     while (true) {
-        system("clear");
+
         cout << "请输入待搜索快递员的关键字" << endl;
         string s;
         s = pServer->receive(0);
         mop->schCourier(s);
-        cout << "1. 继续搜索" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -457,14 +420,11 @@ void Menu::ManagerMenu::schCourier() const {
 
 void Menu::ManagerMenu::schHistory() const {
     while (true) {
-        system("clear");
+
         cout << "请输入待搜索历史记录的关键字" << endl;
         string s;
         s = pServer->receive(0);
         mop->schHistory(s);
-        cout << "1. 继续搜索" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -482,7 +442,7 @@ void Menu::ManagerMenu::schHistory() const {
 }
 
 void Menu::ManagerMenu::changeMPasswd() const {
-    system("clear");
+
     string upasswd, r_upasswd;
     string msg;
     stringstream ss;

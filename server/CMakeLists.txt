@@ -31,6 +31,4 @@ add_executable(server
         src/WarehouseUser.cpp
         src/ServerSocket.h
         src/ServerSocket.cpp
-        src/ClientSocket.h
-        src/ClientSocket.cpp
         )

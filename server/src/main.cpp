@@ -3,8 +3,6 @@
 #include "ServerSocket.h"
 #include "Warehouse.h"
 #include <bits/stdc++.h>
-#include <stdio.h>
-#include <stdlib.h>
 
 const int PORT = 5760;
 

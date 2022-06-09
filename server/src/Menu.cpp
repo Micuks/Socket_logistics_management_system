@@ -8,14 +8,12 @@ using namespace std;
 
 void Menu::SubMenu::schPackage() const {
     while (true) {
-        system("clear");
+
         cout << "请输入待搜索包裹的关键字" << endl;
         string s;
         s = pServer->receive(0);
         op->schPackage(s);
-        cout << "1. 继续搜索" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -40,12 +38,8 @@ void Menu::SubMenu::quit() const{
 // Menu
 void Menu::start() const {
     while (true) {
-        system("clear");
-        cout << "物流管理平台" << endl
-             << "1. 用户入口" << endl
-             << "2. 快递员入口" << endl
-             << "3. 管理员入口" << endl
-             << "4. 退出" << endl;
+
+        cout << "物流管理平台" << endl;
         string s = pServer->receive(0);
         pServer->send(OK.c_str(), 0);
         if (s == "1")

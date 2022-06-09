@@ -6,10 +6,8 @@ using namespace std;
 
 void Menu::UserMenu::login() const {
     while (true) {
-        system("clear");
         string uid, upasswd;
         while (true) {
-            cout << "请输入用户id" << endl << "\t输入-1返回上级菜单" << endl;
             uid = pServer->receive(0);
             if (uid == "-1")
                 return;
@@ -22,7 +20,6 @@ void Menu::UserMenu::login() const {
         }
         uop->setUser(uid);
         while (true) {
-            cout << "请输入密码" << endl << "\t输入-1返回上级菜单" << endl;
             upasswd = pServer->receive(0);
             if (upasswd == "-1")
                 return;
@@ -39,17 +36,7 @@ void Menu::UserMenu::login() const {
 
  void Menu::UserMenu::start() const {
      while (true) {
-         system("clear");
          cout << "用户操作中" << endl;
-         cout << "1. 发快递" << endl
-              << "2. 收快递" << endl
-              << "3. 搜索快递" << endl
-              << "4. 打印所有已发快递" << endl
-              << "5. 打印所有签收和待签收快递" << endl
-              << "6. 充值" << endl
-              << "7. 更改密码" << endl
-              << "8. 返回上级菜单" << endl
-              << "9. 退出系统" << endl;
          string s;
          while (true) {
              s = pServer->receive(0);
@@ -82,15 +69,11 @@ void Menu::UserMenu::login() const {
 
 void Menu::UserMenu::sendPackage() const {
     while (true) {
-        system("clear");
         string pid, pname, rid, rname, description;
         string quantity, ptype;
 
         while (true) {
-            cout << "请选择包裹类别(输入-1返回上级菜单)" << endl
-                 << "1. 普通包裹(5.0元/kg)" << endl
-                 << "2. 易碎品(8.0元/kg)" << endl
-                 << "3. 图书(2.0元/本)" << endl;
+            cout << "请选择包裹类别(输入-1返回上级菜单)" << endl;
             ptype = pServer->receive(0);
             if (ptype == "-1")
                 return;
@@ -167,10 +150,6 @@ void Menu::UserMenu::sendPackage() const {
         uop->reqRecv(hid);
         cout << "包裹发送完毕" << endl;
 
-        cout << "1. 发送下一个包裹" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
-
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -189,7 +168,6 @@ void Menu::UserMenu::sendPackage() const {
 
 void Menu::UserMenu::recvPackage() const {
     while (true) {
-        system("clear");
         string pid, hid;
         stringstream ss;
         string msg;
@@ -221,16 +199,13 @@ void Menu::UserMenu::recvPackage() const {
             }
         }
 
-        system("clear");
+
         cout << "签收的包裹信息如下" << endl;
         op->printPackage(pid);
         uop->finRecv(hid);
         uop->finSend(hid);
 
-        cout << "包裹签收成功" << endl
-             << "1. 签收下一个包裹" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+        cout << "包裹签收成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -248,7 +223,7 @@ void Menu::UserMenu::recvPackage() const {
 }
 
 void Menu::UserMenu::printSendHis() const {
-    system("clear");
+
     uop->printSendHis();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -257,7 +232,7 @@ void Menu::UserMenu::printSendHis() const {
 }
 
 void Menu::UserMenu::printRecvHis() const {
-    system("clear");
+
     uop->printRecvHis();
     cout << "输入任意字符返回上级菜单" << endl;
     string s;
@@ -267,7 +242,7 @@ void Menu::UserMenu::printRecvHis() const {
 
 void Menu::UserMenu::chargeWallet() const {
     while (true) {
-        system("clear");
+
         string s;
         cout << "账户余额为 " << uop->getWallet()
              << ", 输入要充值的金额(输入-1返回上级菜单)" << endl;
@@ -281,11 +256,8 @@ void Menu::UserMenu::chargeWallet() const {
         }
         uop->chargeWallet(stoi(s));
 
-        system("clear");
-        cout << "充值成功, 当前余额为" << uop->getWallet() << endl
-             << "1. 继续充值" << endl
-             << "2. 返回上一级菜单" << endl
-             << "3. 退出系统" << endl;
+
+        cout << "充值成功, 当前余额为" << uop->getWallet() << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -303,7 +275,7 @@ void Menu::UserMenu::chargeWallet() const {
 }
 
 void Menu::UserMenu::changeUpasswd() const {
-    system("clear");
+
     string upasswd, r_upasswd;
     while (true) {
         cout << "输入旧密码(输入-1返回上级菜单)" << endl;

@@ -36,7 +36,7 @@ void Menu::SubMenu::schPackage() const {
 void Menu::SubMenu::quit() const {
     cout << "exiting..." << endl;
     pClient->close();
-    exit(0);
+    quick_exit(0);
 }
 
 // Menu

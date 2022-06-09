@@ -2,10 +2,6 @@
 #include "History.h"
 #include "Menu.h"
 #include "Warehouse.h"
-#include <arpa/inet.h>
-#include <bits/stdc++.h>
-#include <sys/socket.h>
-#include <unistd.h>
 
 const char *SERVER_ADD = "127.0.0.1";
 const int PORT = 5760;

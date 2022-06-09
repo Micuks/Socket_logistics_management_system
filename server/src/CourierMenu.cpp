@@ -7,7 +7,6 @@ using namespace std;
 // CourierMenu
 void Menu::CourierMenu::login() const {
     while (true) {
-        system("clear");
         cout << "快递员登录界面" << endl;
         string cid, cpasswd;
         while (true) {
@@ -41,15 +40,8 @@ void Menu::CourierMenu::login() const {
 
 void Menu::CourierMenu::start() const {
     while (true) {
-        system("clear");
         op->printCourier(cop->getCid());
-        cout << "1. 揽收快递" << endl
-             << "2. 打印揽收历史" << endl
-             << "3. 搜索快递" << endl
-             << "4. 充值" << endl
-             << "5. 更改密码" << endl
-             << "6. 返回上级菜单" << endl
-             << "7. 退出系统" << endl;
+
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -83,7 +75,7 @@ void Menu::CourierMenu::printColHis() const {
 
 void Menu::CourierMenu::acceptPackage() const {
     while (true) {
-        system("clear");
+
         cop->printCollHis();
         string pid, hid;
         string msg;
@@ -117,17 +109,14 @@ void Menu::CourierMenu::acceptPackage() const {
             }
         }
 
-        system("clear");
+
         cout << "揽收的包裹信息如下" << endl;
         op->printPackage(pid);
         cop->finColl(hid);
         cop->billCourier(hid);
         cop->takeManMoney(hid);
 
-        cout << "包裹揽收成功" << endl
-             << "1. 揽收下一个包裹" << endl
-             << "2. 返回上级菜单" << endl
-             << "3. 退出系统" << endl;
+        cout << "包裹揽收成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -146,7 +135,7 @@ void Menu::CourierMenu::acceptPackage() const {
 
 void Menu::CourierMenu::chargeWallet() const {
     while (true) {
-        system("clear");
+
         string s;
         cout << "账户余额为 " << cop->getWallet()
              << ", 输入要充值的金额(输入-1返回上级菜单)" << endl;
@@ -160,11 +149,8 @@ void Menu::CourierMenu::chargeWallet() const {
         }
         cop->chargeWallet(stoi(s));
 
-        system("clear");
-        cout << "充值成功, 当前余额为" << cop->getWallet() << endl
-             << "1. 继续充值" << endl
-             << "2. 返回上一级菜单" << endl
-             << "3. 退出系统" << endl;
+
+        cout << "充值成功, 当前余额为" << cop->getWallet() << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -182,7 +168,7 @@ void Menu::CourierMenu::chargeWallet() const {
 }
 
 void Menu::CourierMenu::changeCpasswd() const {
-    system("clear");
+
     string cpasswd, r_cpasswd;
     string msg;
     stringstream ss;
