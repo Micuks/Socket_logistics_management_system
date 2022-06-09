@@ -14,6 +14,9 @@ double Warehouse::CourierOperation::getWallet() const { return c.getWallet(); }
 void Warehouse::CourierOperation::chargeWallet(const double &val) {
     c.chargeWallet(val);
     con.outFile(cp, c);
+    data->cl.del(cid);
+    data->cl.add(c.getBase());
+    data->outCList();
 }
 void Warehouse::CourierOperation::finColl(const string &hid) {
     BaseHistory bh = data->hl[hid];

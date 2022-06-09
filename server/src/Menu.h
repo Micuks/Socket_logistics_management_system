@@ -6,14 +6,14 @@
 #include <bits/stdc++.h>
 using namespace std;
 
-const string USER = "1";
-const string COURIER = "2";
-const string MANAGER = "3";
-const string OK = "ok";
-const string NOK = "nok";
-
 // Menu
 class Menu {
+    inline static const string USER = "1";
+    inline static const string COURIER = "2";
+    inline static const string MANAGER = "3";
+    inline static const string OK = "ok";
+    inline static const string NOK = "nok";
+
     Warehouse *wh;
     ServerSocket *pServer;
     class SubMenu {

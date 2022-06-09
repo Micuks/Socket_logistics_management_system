@@ -11,14 +11,14 @@ void Menu::SubMenu::schPackage() const {
         system("clear");
         cout << "请输入待搜索包裹的关键字" << endl;
         string s;
-        getline(cin, s);
+        s = pServer->receive(0);
         op->schPackage(s);
         cout << "1. 继续搜索" << endl
              << "2. 返回上级菜单" << endl
              << "3. 退出系统" << endl;
         string k;
         while (true) {
-            getline(cin, k);
+            k = pServer->receive(0);
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;

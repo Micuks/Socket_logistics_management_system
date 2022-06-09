@@ -128,6 +128,10 @@ int Warehouse::UserOperation::getWallet() const { return u.getWallet(); }
 void Warehouse::UserOperation::chargeWallet(const double &val) {
     u.chargeWallet(val);
     con.outFile(up, u);
+
+    data->ul.del(uid);
+    data->ul.add(u.getBase());
+    data->outUList();
 }
 
 bool Warehouse::UserOperation::isRecvAble(const string &hid) const {

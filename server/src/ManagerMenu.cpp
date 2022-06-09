@@ -47,7 +47,7 @@ void Menu::ManagerMenu::start() const {
              << "16. 退出系统" << endl;
         string s;
         while (true) {
-            getline(cin, s);
+            s = pServer->receive(0);
             if (isPositive(s) && stoi(s) <= 16)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
@@ -143,7 +143,7 @@ void Menu::ManagerMenu::addUser() const {
             }
             ss << "此uid已被占用" << endl;
             ss >> msg;
-            pServer->send(msg.c_str()), 0);
+            pServer->send(msg.c_str(), 0);
         }
         cout << "输入你的名字(输入-1返回上级菜单)" << endl;
         uname = pServer->receive(0);

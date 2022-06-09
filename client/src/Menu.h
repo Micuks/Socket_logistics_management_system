@@ -9,10 +9,10 @@ using namespace std;
 // Menu
 class Menu {
     Warehouse *wh;
-    const static string USER = "1";
-    const static string COURIER = "2";
-    const static string MANAGER = "3";
-    const static string OK = "ok";
+    inline static const string USER = "1";
+    inline static const string COURIER = "2";
+    inline static const string MANAGER = "3";
+    inline static const string OK = "ok";
 
     ClientSocket *pClient;
     class SubMenu {

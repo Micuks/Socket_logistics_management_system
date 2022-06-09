@@ -12,6 +12,7 @@ void Menu::SubMenu::schPackage() const {
         cout << "请输入待搜索包裹的关键字" << endl;
         string s;
         getline(cin, s);
+        pClient->send(s.c_str());
         op->schPackage(s);
         cout << "1. 继续搜索" << endl
              << "2. 返回上级菜单" << endl
@@ -19,6 +20,7 @@ void Menu::SubMenu::schPackage() const {
         string k;
         while (true) {
             getline(cin, k);
+            pClient->send(s.c_str());
             if (isPositive(k) && stoi(k) <= 3)
                 break;
             cout << "输入内容错误, 请重新输入" << endl;
