@@ -141,18 +141,12 @@ void ClientSocket::setTimeout(unsigned int seconds, unsigned int milliseconds) {
     if (!this->setUp)
         throw std::logic_error("Socket not set");
 
-#if defined(_WIN32)
-    DWORD timeout = (seconds * 1000) + milliseconds;
-    setsockopt(this->hostSocket, SOL_SOCKET, SO_RCVTIMEO,
-               (const char *)&timeout, sizeof(timeout));
-#else
     struct timeval time;
     time.tv_sec = seconds;
     time.tv_usec = (milliseconds * 1000);
 
     setsockopt(this->connectionSocket, SOL_SOCKET, SO_RCVTIMEO,
                (const char *)&time, sizeof(time));
-#endif
 }
 
 bool ClientSocket::getSet() const { return this->setUp; }
