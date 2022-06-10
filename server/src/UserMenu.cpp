@@ -189,7 +189,7 @@ void Menu::UserMenu::recvPackage() const {
             }
             else if ((hid = uop->schRecvHis(pid)) == "-1") {
                 ss << "pid为 " << pid << " 的包裹不存在, 请重试" << endl;
-                ss >> msg;
+                msg = ss.str();
                 pServer->send(msg.c_str(), 0);
             }
             else if (!uop->isRecvAble(hid)) {

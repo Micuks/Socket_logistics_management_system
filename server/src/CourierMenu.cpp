@@ -95,7 +95,7 @@ void Menu::CourierMenu::acceptPackage() const {
             } else if ((hid = cop->schCollHis(pid)) == "-1") {
                 ss << "pid为 " << pid << " 的包裹不在待揽收列表, 请重试"
                    << endl;
-                ss >> msg;
+                msg = ss.str();
                 pServer->send(msg.c_str(), 0);
             } else if (!cop->isCollAble(hid)) {
                 ss << "包裹现在无法揽收, 请重试" << endl;

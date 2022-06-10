@@ -99,3 +99,12 @@ void Warehouse::ManagerOperation::reqColl(const string &hid,
     data->cl.add(c.getBase());
     data->outCList();
 }
+bool Warehouse::ManagerOperation::isCollAble(const string &hid) const {
+    string hp = con.hisDir(hid) + hid;
+    History h;
+    con.inFile(hp, h);
+    if (h.getCid() == "-1")
+        return true;
+    else
+        return false;
+}

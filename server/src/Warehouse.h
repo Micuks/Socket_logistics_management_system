@@ -94,6 +94,7 @@ class Warehouse {
         void schCourier(const string &s) const;
         void schHistory(const string &s) const;
 
+        bool isCollAble(const string &hid) const;
         void reqColl(const string &hid, const string &cid) const;
     } mop;
 

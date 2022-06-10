@@ -173,7 +173,7 @@ void Menu::ManagerMenu::addCourier() const {
                 break;
             }
             ss << "此cid已被占用" << endl;
-            ss >> msg;
+            msg = ss.str();
             pServer->send(msg.c_str(), 0);
         }
         uname = pServer->receive(0);
@@ -227,7 +227,7 @@ void Menu::ManagerMenu::delUser() const {
             cout << getTime() << " 待删除用户uid: " << uid << endl;
             if (!op->uidExist(uid)) {
                 ss << "uid为 " << uid << " 的用户不存在, 请重试" << endl;
-                ss >> msg;
+                msg = ss.str();
                 pServer->send(msg.c_str(), 0);
             } else {
                 pServer->send(OK.c_str(), 0);
@@ -270,7 +270,7 @@ void Menu::ManagerMenu::delCourier() const {
             cout << getTime() << " 待删除快递员cid: " << uid << endl;
             if (!op->cidExist(uid)) {
                 ss << "cid为 " << uid << " 的快递员不存在, 请重试" << endl;
-                ss >> msg;
+                msg = ss.str();
                 pServer->send(msg.c_str(), 0);
             } else {
                 pServer->send(OK.c_str(), 0);
@@ -318,14 +318,19 @@ void Menu::ManagerMenu::collectPackage() const {
                 pServer->send(msg.c_str(), 0);
                 continue;
             } else if (op->pidExist(pid)) {
-                pServer->send(OK.c_str(), 0);
-                break;
+                hid = op->schPkgHis(pid);
+                if (!mop->isCollAble(hid)) {
+                    ss << "该包裹无法分发, 请重试" << endl;
+                    ss >> msg;
+                    pServer->send(msg.c_str(), 0);
+                } else {
+                    pServer->send(OK.c_str(), 0);
+                    break;
+                }
             }
-            ss << "包裹 " << pid << " 不存在";
-            ss >> msg;
+            msg = "包裹 "+pid+" 不存在";
             pServer->send(msg.c_str(), 0);
         }
-        hid = op->schPkgHis(pid);
 
         cout << getTime() << " 要分发包裹的pid: " << pid << endl;
         op->printCourier();
@@ -341,7 +346,7 @@ void Menu::ManagerMenu::collectPackage() const {
                 break;
             }
             ss << "快递员 " << cid << " 不存在" << endl;
-            ss >> msg;
+            msg = ss.str();
             pServer->send(msg.c_str(), 0);
         }
 
