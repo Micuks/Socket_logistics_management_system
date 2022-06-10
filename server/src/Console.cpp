@@ -39,6 +39,27 @@ void Console::recvData() {
     system(cmd.c_str());
 }
 
+void Console::sendData(ServerSocket *pServer) {
+    const int DATA_SIZE = 65535;
+    string cmd = "tar -czvf data.tar.gz data/";
+    system(cmd.c_str());
+
+    const char *filename = "data.tar.gz";
+    FILE *fp = fopen(filename, "r");
+    if (fp == NULL) {
+        perror("error reading file");
+        exit(1);
+    }
+    char data[DATA_SIZE] = {0};
+    while (fgets(data, DATA_SIZE, fp) != nullptr) {
+        pServer->send(data, 0);
+        bzero(data, DATA_SIZE);
+    }
+    //    string cmd =
+    //        "tar -czvf - data/ | nc -w 3 " + serverAddr + " " +
+    //        to_string(port);
+}
+
 void Console::sendData() {
     string cmd =
         "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);

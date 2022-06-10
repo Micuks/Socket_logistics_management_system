@@ -20,7 +20,8 @@ class Console {
     string hisDir(const string &s);
     string couDir(const string &s);
     void recvData();
-    void sendData();
+    void recvData(ClientSocket *pClient);
+    void sendData(ClientSocket *pClient);
     void backupData();
     void recoverData();
 };

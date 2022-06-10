@@ -1,6 +1,7 @@
 #ifndef CONSOLE_H
 #define CONSOLE_H
 
+#include "ServerSocket.h"
 #include <bits/stdc++.h>
 using namespace std;
 const string serverAddr = "127.0.0.1";
@@ -16,6 +17,7 @@ class Console {
     string hisDir(const string &s);
     string couDir(const string &s);
     void sendData();
+    void sendData(ServerSocket *pServer);
     void recvData();
     void backupData();
     void recoverData();

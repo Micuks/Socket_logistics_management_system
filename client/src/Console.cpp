@@ -34,14 +34,33 @@ string Console::hisDir(const string &s) {
     return path;
 }
 
+void Console::recvData(ClientSocket *pClient) {
+    //    string cmd = "nc -l -p" + to_string(port) + " | tar -xzvf -";
+    const int DATA_SIZE = 65535;
+    string buffer;
+    FILE *fp;
+    const char *filename = "data.tar.gz";
+    fp = fopen(filename, "w");
+    while (1) {
+        buffer = pClient->receive();
+        if (buffer == "")
+            break;
+        fprintf(fp, "%s", buffer.c_str());
+        buffer.clear();
+    }
+    string cmd = "tar -xzvf data.tar.gz data";
+    system(cmd.c_str());
+}
+
 void Console::recvData() {
     string cmd = "nc -l -p" + to_string(port) + " | tar -xzvf -";
     system(cmd.c_str());
 }
 
-void Console::sendData() {
-    string cmd =
-        "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);
+void Console::sendData(ClientSocket *pClient) {
+    //    const int DATA_SIZE = 65535;
+    string cmd = "tar -czvf data/ data.tar.gz";
+    "tar -czvf - data/ | nc -w 3 " + serverAddr + " " + to_string(port);
     system(cmd.c_str());
 }
 

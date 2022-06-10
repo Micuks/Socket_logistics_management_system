@@ -11,10 +11,13 @@ using namespace std;
 Console con;
 int main() {
     con.sendData();
+
     ServerSocket server(PORT, 1);
     server.addClient();
     server.send("Hello Client", 0);
     cout << "received: " << server.receive(0) << endl;
+
+//    con.sendData(&server);
 
     Warehouse ware(&server);
     Menu men(&ware, &server);
