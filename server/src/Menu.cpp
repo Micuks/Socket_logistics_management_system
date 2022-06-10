@@ -41,7 +41,6 @@ void Menu::start() const {
 
         cout << "物流管理平台" << endl;
         string s = pServer->receive(0);
-        pServer->send(OK.c_str(), 0);
         if (s == "1")
             um.login();
         if (s == "2")

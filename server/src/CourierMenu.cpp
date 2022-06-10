@@ -10,23 +10,23 @@ void Menu::CourierMenu::login() const {
         cout << "快递员登录界面" << endl;
         string cid, cpasswd;
         while (true) {
-            cout << "请输入快递员id(输入-1返回上级菜单)" << endl;
             cid = pServer->receive(0);
             if (cid == "-1")
                 return;
+            cout << getTime() << " 快递员id: " << cid << endl;
             if (op->cidExist(cid)) {
                 pServer->send(OK.c_str(), 0);
                 break;
             }
-            cout << cid << "快递员不存在" << endl;
+            cout << cid << " 快递员不存在" << endl;
             pServer->send(NOK.c_str(), 0);
         }
         cop->setCourier(cid);
         while (true) {
-            cout << "请输入密码(输入-1返回上级菜单)" << endl;
             cpasswd = pServer->receive(0);
             if (cpasswd == "-1")
                 return;
+            cout << getTime() << " 输入的密码: " << cpasswd << endl;
             if (cop->cpasswdMatch(cpasswd)) {
                 pServer->send(OK.c_str(), 0);
                 break;
@@ -34,6 +34,7 @@ void Menu::CourierMenu::login() const {
             pServer->send(NOK.c_str(), 0);
             cout << cid << "用户名或密码错误" << endl;
         }
+        cout << getTime() << " 快递员 " << cid << " 登录成功" << endl;
         start();
     }
 }
@@ -66,8 +67,8 @@ void Menu::CourierMenu::start() const {
     }
 }
 void Menu::CourierMenu::printColHis() const {
+    cout << getTime() << " 打印揽收历史" << endl;
     cop->printCollHis();
-    cout << "输入任意字符返回" << endl;
     string s;
     s = pServer->receive(0);
     return;
@@ -83,40 +84,36 @@ void Menu::CourierMenu::acceptPackage() const {
         while (true) {
             msg.clear();
             ss.str("");
-            cout << "输入待揽收包裹的pid(输入-1返回上级菜单)" << endl;
             pid = pServer->receive(0);
             if (pid == "-1")
                 return;
-            else if (pid[0] != 'P') {
+            cout << getTime() << " 包裹pid: " << pid << endl;
+            if (pid[0] != 'P') {
                 ss << "包裹pid格式错误, 请重新输入" << endl;
                 ss >> msg;
                 pServer->send(msg.c_str(), 0);
-            }
-            else if ((hid = cop->schCollHis(pid)) == "-1") {
+            } else if ((hid = cop->schCollHis(pid)) == "-1") {
                 ss << "pid为 " << pid << " 的包裹不在待揽收列表, 请重试"
-                     << endl;
+                   << endl;
                 ss >> msg;
                 pServer->send(msg.c_str(), 0);
-            }
-            else if (!cop->isCollAble(hid)) {
+            } else if (!cop->isCollAble(hid)) {
                 ss << "包裹现在无法揽收, 请重试" << endl;
                 ss >> msg;
                 pServer->send(msg.c_str(), 0);
-            }
-            else {
+            } else {
                 pServer->send(OK.c_str(), 0);
                 break;
             }
         }
 
-
-        cout << "揽收的包裹信息如下" << endl;
+        cout << getTime() << " 揽收的包裹信息如下" << endl;
         op->printPackage(pid);
         cop->finColl(hid);
         cop->billCourier(hid);
         cop->takeManMoney(hid);
 
-        cout << "包裹揽收成功" << endl;
+        cout << getTime() << " 包裹揽收成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -137,8 +134,7 @@ void Menu::CourierMenu::chargeWallet() const {
     while (true) {
 
         string s;
-        cout << "账户余额为 " << cop->getWallet()
-             << ", 输入要充值的金额(输入-1返回上级菜单)" << endl;
+        cout << getTime() << " 账户余额为 " << cop->getWallet() << endl;
         while (true) {
             s = pServer->receive(0);
             if (s == "-1")
@@ -149,8 +145,7 @@ void Menu::CourierMenu::chargeWallet() const {
         }
         cop->chargeWallet(stoi(s));
 
-
-        cout << "充值成功, 当前余额为" << cop->getWallet() << endl;
+        cout << getTime() << " 充值成功, 当前余额为" << cop->getWallet() << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -175,10 +170,10 @@ void Menu::CourierMenu::changeCpasswd() const {
     while (true) {
         ss.str("");
         msg.clear();
-        cout << "输入旧密码(输入-1返回上级菜单)" << endl;
         cpasswd = pServer->receive(0);
         if (cpasswd == "-1")
             return;
+        cout << getTime() << " 输入的旧密码: " << cpasswd << endl;
         if (cop->cpasswdMatch(cpasswd)) {
             pServer->send(OK.c_str(), 0);
             break;
@@ -192,27 +187,25 @@ void Menu::CourierMenu::changeCpasswd() const {
 
     while (true) {
         while (true) {
-            cout << "输入新密码, 不能包含空格(输入-1返回上级菜单)" << endl;
             cpasswd = pServer->receive(0);
             if (cpasswd == "-1")
                 return;
+            cout << getTime() << " 新密码: " << cpasswd << endl;
             if (cpasswd.find(" ") == string::npos)
                 break;
             cout << "密码中不能包含空格" << endl;
         }
 
-        cout << "请再次输入新密码(输入-1返回上级菜单)" << endl;
         r_cpasswd = pServer->receive(0);
         if (r_cpasswd == "-1")
             return;
+        cout << getTime() << " 再次输入的新密码: " << cpasswd << endl;
         if (r_cpasswd == cpasswd)
             break;
         cout << "两次输入密码不同" << endl;
     }
     cop->changeCpasswd(cpasswd);
-    cout << "密码修改成功, 新密码为" << endl
-         << cpasswd << endl
-         << "输入任意字符返回" << endl;
+    cout << getTime() << " 密码修改成功, 新密码为" << endl << cpasswd << endl;
     string s;
     s = pServer->receive(0);
 }

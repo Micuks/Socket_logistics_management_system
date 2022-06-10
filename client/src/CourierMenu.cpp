@@ -22,7 +22,7 @@ void Menu::CourierMenu::login() const {
             msg = pClient->receive();
             if(msg == "ok")
                 break;
-            cout << cid << "快递员不存在" << endl;
+            cout << cid << " 快递员不存在" << endl;
         }
         cop->setCourier(cid);
         while (true) {

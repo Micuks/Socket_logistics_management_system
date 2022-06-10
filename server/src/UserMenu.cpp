@@ -18,6 +18,7 @@ void Menu::UserMenu::login() const {
             cout << uid << " 用户不存在" << endl;
             pServer->send(NOK.c_str(), 0);
         }
+        cout << getTime() <<  "用户名" << uid << endl;
         uop->setUser(uid);
         while (true) {
             upasswd = pServer->receive(0);
@@ -73,37 +74,39 @@ void Menu::UserMenu::sendPackage() const {
         string quantity, ptype;
 
         while (true) {
-            cout << "请选择包裹类别(输入-1返回上级菜单)" << endl;
             ptype = pServer->receive(0);
             if (ptype == "-1")
                 return;
-            else if (isPositive(ptype) && stoi(ptype) <= 3)
+            cout << getTime() << " 包裹类别: " << ptype << endl;
+            if (isPositive(ptype) && stoi(ptype) <= 3)
                 break;
             cout << "输入错误, 请重新输入" << endl;
         }
 
-        cout << "输入包裹名称(输入-1返回上级菜单)" << endl;
         pname = pServer->receive(0);
         if (pname == "-1")
             return;
         replace(pname, " ", "_");
+        cout << getTime() << " 包裹名称: " << pname << endl;
 
-        cout << "输入包裹描述(输入0为无描述, 输入-1返回上级菜单)" << endl;
         description = pServer->receive(0);
         if (description == "0")
             description = "无";
         if (description == "-1")
             return;
         replace(description, " ", "_");
+        cout << getTime() << " 包裹描述: " << description << endl;
 
         if (ptype == "3") {
             while (true) {
-                cout << "请输入图书本数(输入-1返回上级菜单)" << endl;
                 quantity = pServer->receive(0);
                 if (quantity == "-1")
                     return;
-                else if (isPositive(quantity))
+                cout << getTime() << " 图书本数: " << quantity << endl;
+                if (isPositive(quantity)) {
+                    cout << getTime() << " " << "Type: Book" << " Name: " << pname << " Description: " << description << " Quantity: " << quantity << endl;
                     break;
+                }
                 cout << "输入内容错误, 请重新输入" << endl;
             }
         } else {
@@ -112,16 +115,17 @@ void Menu::UserMenu::sendPackage() const {
                 quantity = pServer->receive(0);
                 if (quantity == "-1")
                     return;
-                else if (isPositive(quantity))
+                cout << getTime() << " 重量: " << quantity << endl;
+                if (isPositive(quantity))
                     break;
+                cout << getTime() << " " << "Type: Package or fragile" << " Name: " << pname << " Description: " << description << " Quantity: " << quantity << endl;
                 cout << "输入内容错误, 请重新输入" << endl;
             }
         }
 
         if (!uop->billPackage(ptype, quantity)) {
             pServer->send(NOK.c_str(), 0);
-            cout << "余额不足以支付运费, 请充值" << endl
-                 << "输入任意字符继续" << endl;
+            cout << getTime() << " 余额不足以支付运费, 请充值" << endl;
             string s;
             s = pServer->receive(0);
             continue;
@@ -132,10 +136,10 @@ void Menu::UserMenu::sendPackage() const {
         }
 
         while (true) {
-            cout << "输入输入收件人uid(输入-1返回上级菜单)" << endl;
             rid = pServer->receive(0);
             if (rid == "-1")
                 return;
+            cout << getTime() << " 收件人id: " << rid << endl;
             if (op->uidExist(rid)) {
                 pServer->send(OK.c_str(), 0);
                 break;
@@ -143,7 +147,7 @@ void Menu::UserMenu::sendPackage() const {
             cout << "输入错误, id为 " << rid << " 的收件人不存在" << endl;
         }
 
-        cout << "收件人信息如下" << endl;
+        cout << getTime() << " 收件人信息如下" << endl;
         op->printUser(rid);
 
         string hid = uop->reqSend(pid, rid);
@@ -174,11 +178,11 @@ void Menu::UserMenu::recvPackage() const {
         while (true) {
             ss.str("");
             msg.clear();
-            cout << "输入待签收包裹的pid(输入-1返回上级菜单)" << endl;
             pid = pServer->receive(0);
             if (pid == "-1")
                 return;
-            else if (pid[0] != 'P') {
+            cout << getTime() << " 包裹pid: " << pid << endl;
+            if (pid[0] != 'P') {
                 ss << "包裹pid格式错误, 请重新输入" << endl;
                 ss >> msg;
                 pServer->send(msg.c_str(), 0);
@@ -200,12 +204,12 @@ void Menu::UserMenu::recvPackage() const {
         }
 
 
-        cout << "签收的包裹信息如下" << endl;
+        cout << getTime() << " 签收的包裹信息如下" << endl;
         op->printPackage(pid);
         uop->finRecv(hid);
         uop->finSend(hid);
 
-        cout << "包裹签收成功" << endl;
+        cout << getTime() << " 包裹签收成功" << endl;
         string s;
         while (true) {
             s = pServer->receive(0);
@@ -223,18 +227,18 @@ void Menu::UserMenu::recvPackage() const {
 }
 
 void Menu::UserMenu::printSendHis() const {
-
+    cout << getTime() << " 打印发送历史" << endl;
     uop->printSendHis();
-    cout << "输入任意字符返回上级菜单" << endl;
+
     string s;
     s = pServer->receive(0);
     return;
 }
 
 void Menu::UserMenu::printRecvHis() const {
-
+    cout << getTime() << " 打印接受历史" << endl;
     uop->printRecvHis();
-    cout << "输入任意字符返回上级菜单" << endl;
+
     string s;
     s = pServer->receive(0);
     return;
@@ -244,8 +248,7 @@ void Menu::UserMenu::chargeWallet() const {
     while (true) {
 
         string s;
-        cout << "账户余额为 " << uop->getWallet()
-             << ", 输入要充值的金额(输入-1返回上级菜单)" << endl;
+        cout << getTime() << " 账户余额为 " << uop->getWallet() << endl;
         while (true) {
             s = pServer->receive(0);
             if (s == "-1")
@@ -256,8 +259,7 @@ void Menu::UserMenu::chargeWallet() const {
         }
         uop->chargeWallet(stoi(s));
 
-
-        cout << "充值成功, 当前余额为" << uop->getWallet() << endl;
+        cout << getTime() << " 充值成功, 当前余额为" << uop->getWallet() << endl;
         string k;
         while (true) {
             k = pServer->receive(0);
@@ -278,8 +280,8 @@ void Menu::UserMenu::changeUpasswd() const {
 
     string upasswd, r_upasswd;
     while (true) {
-        cout << "输入旧密码(输入-1返回上级菜单)" << endl;
         upasswd = pServer->receive(0);
+        cout << getTime() << " 旧密码: " << upasswd << endl;
         if (upasswd == "-1")
             return;
         if (uop->upasswdMatch(upasswd)) {
@@ -293,8 +295,8 @@ void Menu::UserMenu::changeUpasswd() const {
 
     while (true) {
         while (true) {
-            cout << "输入新密码, 不能包含空格(输入-1返回上级菜单)" << endl;
             upasswd = pServer->receive(0);
+            cout << getTime() << " 新密码: " << upasswd << endl;
             if (upasswd == "-1")
                 return;
             if (upasswd.find(" ") == string::npos)
@@ -302,8 +304,8 @@ void Menu::UserMenu::changeUpasswd() const {
             cout << "密码中不能包含空格" << endl;
         }
 
-        cout << "请再次输入新密码(输入-1返回上级菜单)" << endl;
         r_upasswd = pServer->receive(0);
+        cout << getTime() << " 再次输入的新密码: " << upasswd << endl;
         if (r_upasswd == "-1")
             return;
         if (r_upasswd == upasswd)
@@ -311,9 +313,8 @@ void Menu::UserMenu::changeUpasswd() const {
         cout << "两次输入密码不同" << endl;
     }
     uop->changeUpasswd(upasswd);
-    cout << "密码修改成功, 新密码为" << endl
-         << upasswd << endl
-         << "输入任意字符返回" << endl;
+    cout << getTime() << " 密码修改成功, 新密码为" << endl
+         << upasswd << endl;
     string s;
     s = pServer->receive(0);
 }

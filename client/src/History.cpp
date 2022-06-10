@@ -173,7 +173,7 @@ string HistoryList::schPkgHis(const string &pid) const {
 istream &operator>>(istream &in, HistoryList &hl) {
     int num;
     in >> num;
-    while (num--) {
+    for(int i = 0; i < num; i++) {
         BaseHistory bh;
         in >> bh;
         hl.add(bh);

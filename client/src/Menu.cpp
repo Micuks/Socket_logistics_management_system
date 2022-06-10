@@ -56,11 +56,6 @@ void Menu::start() const {
             cout << "输入内容错误, 请重新输入" << endl;
         }
         pClient->send(s.c_str());
-        string msg = pClient->receive();
-        if (msg != "ok") {
-            perror("user menu error");
-            exit(EXIT_FAILURE);
-        }
         if (s == "1") {
             um.login();
         }
@@ -77,5 +72,5 @@ void Menu::quit() const{
     cout << "exiting..." << endl;
 //    con.sendData();
     pClient->close();
-    exit(0);
+    quick_exit(0);
 }

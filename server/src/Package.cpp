@@ -150,7 +150,7 @@ void PackageList::schPackage(const string &s) const {
 istream &operator>>(istream &in, PackageList &pl) {
     int num;
     in >> num;
-    while (num--) {
+    for(int i = 0; i < num; i++) {
         BasePackage bp;
         in >> bp;
         pl.add(bp);

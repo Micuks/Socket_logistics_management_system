@@ -149,7 +149,7 @@ void UserList::schUser(const string &s) const {
 istream &operator>>(istream &in, UserList &ul) {
     int num;
     in >> num;
-    while (num--) {
+    for(int i = 0; i < num; i++) {
         BaseUser bu;
         in >> bu;
         ul.add(bu);

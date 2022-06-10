@@ -104,7 +104,7 @@ void CourierList::schCourier(const string &s) const {
 istream &operator>>(istream &in, CourierList &cl) {
     int num;
     in >> num;
-    while (num--) {
+    for(int i = 0; i < num; i++) {
         BaseUser bu;
         in >> bu;
         cl.add(bu);
