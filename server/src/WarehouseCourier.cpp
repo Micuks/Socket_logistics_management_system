@@ -104,6 +104,7 @@ void Warehouse::CourierOperation::billCourier(const string &hid) {
 
     data->cl.del(cid);
     data->cl.add(c.getBase());
+    data->outCList();
 }
 
 void Warehouse::CourierOperation::changeCpasswd(const string &s) {
