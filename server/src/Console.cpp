@@ -55,9 +55,6 @@ void Console::sendData(ServerSocket *pServer) {
         pServer->send(data, 0);
         bzero(data, DATA_SIZE);
     }
-    //    string cmd =
-    //        "tar -czvf - data/ | nc -w 3 " + serverAddr + " " +
-    //        to_string(port);
 }
 
 void Console::sendData() {
